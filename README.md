@@ -10,6 +10,8 @@ This repo contains the source code for that model as well as the web site that s
 gained by looking at the model. This readme gives a quick overview of the high points of the model both conceptually and 
 in the code base. It also touches on some basic architecture and what tools and libraries we used to develop the web site.
 
+For instructions on setting up a development environment for this project, check new-developer-setup.txt
+
 ## Model Basics
 The model is an agent based model that simulates the conditions in a fish supply chain over time. It considers 
 (at a high level) everything from the amount of fish in the ocean, how many are caught by local fishermen all the way 
