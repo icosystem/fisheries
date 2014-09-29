@@ -1,0 +1,110 @@
+@import "constants.less";
+@import "mixins.less";
+
+.no-change-text {
+	font-size: 1.3em;
+	font-weight: normal;
+	color: #ccc;
+}
+.range-chart {
+	font-size: 2em;
+	
+	.no-change {
+		margin-left: 0.5em; /* spacer in between decrease/increase */
+	}
+	.range-label {
+		display: inline-block;
+		font-size: 9px;
+		text-align: center;
+		&:first-of-type {
+			margin-right: 6px;
+		}
+		&:last-of-type {
+			margin-left: 6px;
+		}
+	}
+}
+.increase {
+	color: #A2DA79;
+}
+.better-than-start {
+	color: green;
+}		
+.decrease {
+	color: lighten(red, 30%);
+}
+.worse-than-start {
+	color: red;
+}
+.baselineWorseThanStart {
+	color: red;
+}
+.baselineBetterThanStart {
+	color: green;
+}
+.change-in-baseline-from-start {
+	margin: 0 6px;
+	font-size: 0.9em;
+}
+.off, .baselineNoChange {
+	color: #eee;
+}
+.summary-results-legend {
+	margin-top: 0.5em;
+	margin-bottom: 1.5em;
+}
+table.summary-results-items {
+	border: none;
+}
+.summary-results-header {
+	th { text-align: center; }
+	padding-bottom: 1.5em;
+}
+
+@media only screen and (max-width: 1459px) {
+	.second-column {
+		min-width: 30px;
+	}
+}
+@media only screen and (min-width: 1460px) {
+	.second-column {
+		padding-right: 2.5em;
+		min-width: 30px;
+	}
+}
+.third-column {
+	min-width: 100px;
+}
+@media only screen and (max-width: 1459px) {
+	.summary-results-item {
+		.name {
+			font-size: 1.2em;
+			font-weight: bold;
+			color: #333;
+		}
+		.cell {
+			height: 2.5em;
+			vertical-align: middle;
+		}
+		.glyph {
+			text-align: center;
+		}
+	}
+}
+@media only screen and (min-width: 1460px) {
+	.summary-results-item {
+		.name {
+			font-size: 1.3em;
+			font-weight: bold;
+			color: #333;
+			margin: 0 2em 0 0;
+		}
+		.cell {
+			height: 2.5em;
+			vertical-align: middle;
+		}
+		.glyph {
+			text-align: center;
+		}
+	}
+}

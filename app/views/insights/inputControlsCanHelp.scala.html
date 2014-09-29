@@ -1,0 +1,82 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationComparisonChartData._
+@import charts.lineChart
+@import inputs._
+@import com.icosystem.json._
+@import controllers.LimitEntriesValues
+
+@disseminationMain("inputcontrolscanhelp", "Input Controls can Help - Fisheries Supply Chain", "insights", c,
+    Map(uiConfig.years.id -> 30)) {
+
+<h3 class="breadcrumbs"><a href="@routes.Application.index()">Insights</a> -></h3>
+<h3 class="breadcrumbs">Input Controls can Help</h3>
+
+<h2 class="pagetitle">Input Controls can Help</h2>
+
+<p>Currently the Mindoro tuna fishery is being fished sustainably<a class="ref" href="@routes.Application.aboutMindoroTunaFishery()">1</a>.
+    This is expected to change as increasing global demand leads to increased profits, inducing overfishing<a class="ref" href="">2</a>.</p>
+
+<p>If the Mindoro tuna fishery were to adopt input controls (e.g. limiting the number of boats that are allowed to fish),
+    the current level of fishing could be maintained, creating much better long term outcomes for both the fish stock
+    and for the fishing community. If input controls are adopted by themselves, however, middlemen and exporters see profits decline.</p>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Try limiting the number of boats (by selecting Max Entry)</h3>
+
+        <div class="input-section-header">
+            <h3>Quotas</h3>
+        </div>
+
+		@quotaInterventionItem(uiConfig.interventionLimitEntries, uiConfig.interventionUseTotalAllowableCatch.copy(visible = false), uiConfig.interventionTotalAllowableCatch.copy(visible = false))
+	</span>
+	
+	<span class="outputs">
+        <span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2'"> No Limits - Fish stock starts to decline </h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'"> Max Entry - The fish stock is maintained</h3>
+            @lineChart(biomassBaselineVsInterventionComparisonChart.comparisonId, "model.resultsId", "Fish Stock", "Years", "Tons")
+		</span>
+        <span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2'"> No Limits - Surplus levels off </h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'"> Max Entry - Surplus grows dramatically </h3>
+            @lineChart(perFisherSurplusBaselineVsInterventionComparisonChart.comparisonId, "model.resultsId", "Per Capita Surplus after Living Costs", "Years", "$ / household / year")
+        </span>
+        <span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2'"> No Limits - Middlemen profits continue to rise </h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'"> Max Entry - Middlemen see slightly lower profits </h3>
+            @lineChart(middlemanTotalProfitsComparisonChart.comparisonId, "model.resultsId", "Middleman Total Profits", "Years", "$ / year")
+        </span>
+        <span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2'"> No Limits - Exporter profits continue to rise </h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'"> Max Entry - Exporters see slightly lower profits </h3>
+            @lineChart(exporterTotalProfitsComparisonChart.comparisonId, "model.resultsId", "Exporter Total Profits", "Years", "$ / year")
+        </span>
+        <span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2'"> No Limits - Consumption continues to dwindle </h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'"> Max Entry - Consumption is slightly lower </h3>
+            @lineChart(consumerDemandPer1000Chart.comparisonId, "model.resultsId", "Consumption Per Capita", "Years", "Tons / year (x1000)")
+        </span>
+	</span>
+</span>
+
+}

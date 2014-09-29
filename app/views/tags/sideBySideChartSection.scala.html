@@ -1,0 +1,65 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(infotable: Boolean, title: String, id: String, prefixA: String, prefixB: String)(content: Seq[model.ChartConfig])
+
+<a href="#" data-toggle="collapse" data-target="#@id"><i class="fa fa-sort fa-fw"></i> <h2 style="display: inline !important;" class="chart-section-title">@title</h2></a><br>
+
+<div class="collapse in sidebysidechartsection" id="@id">
+	<span class="side-by-side-charts-section-header">
+		<h2 class="chart-type-title">@prefixA</h2>
+		<h2 class="chart-type-title">@prefixB</h2> <br>
+	</span>
+	
+	@content.map { c =>
+	<a class="chart-show-hide-and-title" href="#" data-toggle="collapse" data-target="#sidebysidechartrow-@c.id"><i class="fa fa-sort fa-fw"></i>&nbsp; @c.title</a>
+	<span class="side-by-side-charts">
+		<div class="collapse in sidebysidechartrow" id="sidebysidechartrow-@c.id">
+			<div class="chart-wrapper @c.chartType">
+				<div google-chart chart="results.chartData.@prefixA.@c.id" id="@prefixA-@c.id" class="chart"></div>
+				@if(infotable){
+				<span style="position:absolute; right:15px; top:5px;" class="glyphicon glyphicon-info-sign" id="metachart-icon-@prefixA-@c.id"></span>
+				<div style="z-index: 10; position:absolute; left:-999em;" google-chart chart="results.chartMetaData.@prefixA.@c.id" id="metachart-@prefixA-@c.id" class="chart-table"></div>
+				<script>
+					$('#metachart-icon-@prefixA-@c.id').hover(function(){
+						$('#metachart-@prefixA-@c.id').css('left','0');
+					}, function() {
+						$('#metachart-@prefixA-@c.id').css('left','-999em');
+					});
+				</script>
+				}
+			</div>
+			<div class="chart-wrapper">
+				<div google-chart chart="results.chartData.@prefixB.@c.id" id="@prefixB-@c.id" class="chart"></div><br>
+				@if(infotable){
+				<span style="position:absolute; right:15px; top:5px;" class="glyphicon glyphicon-info-sign" id="metachart-icon-@prefixB-@c.id"></span>
+				<div style="z-index: 10; position:absolute; left:-999em;" google-chart chart="results.chartMetaData.@prefixB.@c.id" id="metachart-@prefixB-@c.id" class="chart-table"></div>
+				<script>
+					$('#metachart-icon-@prefixB-@c.id').hover(function(){
+						$('#metachart-@prefixB-@c.id').css('left','0');
+					}, function() {
+						$('#metachart-@prefixB-@c.id').css('left','-999em');
+					});
+				</script>
+				}
+			</div>
+		</div>
+	</span>
+	}
+	
+</div>

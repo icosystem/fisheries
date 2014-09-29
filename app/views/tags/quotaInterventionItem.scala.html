@@ -1,0 +1,100 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(scientist: Boolean, limitEntries: controllers.InputConfig, useTotalAllowableCatch : controllers.InputConfig, totalAllowableCatch: controllers.InputConfig, showPhasing: Boolean = true)
+
+@import tags._
+@import controllers.UseTotalAllowableCatchValues
+
+<div class="input-item @if(!limitEntries.visible && !scientist){visuallyhidden}">
+    <label class="control-label" for="@limitEntries.id">@limitEntries.label</label>
+    <div>
+        @for(option <- limitEntries.radioValues){
+            <input type="radio" ng-model="config.@limitEntries.id" id="@{limitEntries.id + "_" + option._2}" value="@option._2">
+            <label class="radio-label" for="@{limitEntries.id + "_" + option._2}"> @option._1</label><br/>
+        }
+        @for(text <- limitEntries.helpText){@helpWidget(text)}
+    </div>
+</div>
+
+<div class="input-item @if(!useTotalAllowableCatch.visible && !scientist){visuallyhidden}">
+    <label class="control-label" for="@useTotalAllowableCatch.id">@useTotalAllowableCatch.label</label>
+    <div>
+        @for(option <- useTotalAllowableCatch.radioValues){
+            <input type="radio" ng-model="config.@useTotalAllowableCatch.id" id="@{useTotalAllowableCatch.id + "_" + option._2}" value="@option._2">
+            <label class="radio-label" for="@{useTotalAllowableCatch.id + "_" + option._2}"> @option._1</label><br/>
+        }
+        @for(text <- useTotalAllowableCatch.helpText){@helpWidget(text)}
+    </div>
+</div>
+
+<div class="input-item @if(!totalAllowableCatch.visible && !scientist){visuallyhidden}" ng-hide="config.@{useTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2'">
+    <label class="control-label" for="@totalAllowableCatch.id">
+        @totalAllowableCatch.label
+        @for(text <- totalAllowableCatch.helpText){@helpWidget(text)}
+    </label>
+
+    <label id="@totalAllowableCatch.id-value" class="slider-value-label quota-slider-label">@totalAllowableCatch.units.replace("{}", "{{config."+totalAllowableCatch.id+" | " + totalAllowableCatch.filter + "}}")</label>
+    <div class="slider-with-min-max-labels">
+        <div class="left-slider-label">@totalAllowableCatch.leftLabel</div><div class="right-slider-label">@totalAllowableCatch.rightLabel</div>
+        <input type="range" ng-model="config.@{totalAllowableCatch.id}.endValue" id="@totalAllowableCatch.id" min="@totalAllowableCatch.min" max="@totalAllowableCatch.max" step="@totalAllowableCatch.step">
+    </div>
+
+    @if(showPhasing){
+        <span class="phasing-slider">
+            <span class="ranged-slider-phasing-label">Phasing</span>
+            <div class="ranged-slider" id="@{totalAllowableCatch.id.replace(".", "-")}-slider">
+                <select ng-model="config.@{totalAllowableCatch.id}.startYear" id="@{totalAllowableCatch.id.replace(".", "-")}-startYear">
+                @for(i <- 0 to 10){<option value="@i">@i</option>}
+                </select>
+
+                <select ng-model="config.@{totalAllowableCatch.id}.endYear" id="@{totalAllowableCatch.id.replace(".", "-")}-endYear">
+                @for(i <- 0 to 10){<option value="@i">@i</option>}
+                </select>
+            </div>
+            <p class="ranged-slider-label">{{interventionMessageLine1(config.@{totalAllowableCatch.id}.startYear, config.@{totalAllowableCatch.id}.endYear)}}<br>
+                {{interventionMessageLine2(config.@{totalAllowableCatch.id}.startYear, config.@{totalAllowableCatch.id}.endYear)}}</p>
+        </span>
+
+        <script>
+        $(function(){
+
+        $('select#@{totalAllowableCatch.id.replace(".", "-")}-startYear, select#@{totalAllowableCatch.id.replace(".", "-")}-endYear').selectToUISlider(
+        {	tooltip: false
+        }).hide(); // hide original dropdowns
+
+        $('#handle_@{totalAllowableCatch.id.replace(".", "-")}-startYear').on('aria-valuenow', function(){
+        var newValue = $(this).attr('aria-valuenow');
+        var scope = angular.element('#InputsCtrl').scope();
+        scope.$apply(function(){
+        scope.config.@{totalAllowableCatch.id}.startYear = newValue;
+        });
+        });
+        $('#handle_@{totalAllowableCatch.id.replace(".", "-")}-endYear').on('aria-valuenow', function(){
+        var newValue = $(this).attr('aria-valuenow');
+        var scope = angular.element('#InputsCtrl').scope();
+        scope.$apply(function(){
+        scope.config.@{totalAllowableCatch.id}.endYear = newValue;
+        });
+        });
+
+        $('#@{totalAllowableCatch.id.replace(".", "-")}-slider .ui-slider-scale>li:last-of-type .ui-slider-label').append('<sup>th</sup>yr');
+        });
+        </script>
+    }
+</div>

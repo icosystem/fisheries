@@ -1,0 +1,120 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(pagename: String, title: String, parent: String, c: controllers.ModelConfigUI, runParameters: Map[String, play.api.libs.json.JsValue] = Map())(content: Html)
+
+@import play.api.libs.json._
+
+<!DOCTYPE html>
+
+<html class="@pagename @parent">
+    <head>
+        <meta charset="utf-8">
+        <title>@title</title>
+        <link rel="stylesheet" href="@routes.Assets.at("css/redmond/jquery-ui-1.7.1.custom.css")">
+        <link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        
+        <script src="@routes.Assets.at("javascripts/underscore/underscore-min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/jquery-ui-1.9.2.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/selectToUISlider.jQuery.js")"></script>
+        <script src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")" ></script>
+        <script src="@routes.WebJarAssets.at(WebJarAssets.locate("angular.min.js"))"></script>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script src="@routes.Assets.at("javascripts/throttle.jquery.min.js")"></script>
+		<script src="@routes.Assets.at("javascripts/general-services.js")"></script>
+		<script src="@routes.Assets.at("javascripts/util.js")"></script>
+		<script src="@routes.Assets.at("javascripts/filters.js")"></script>
+        
+        <link href="http://fonts.googleapis.com/css?family=Exo+2:400,300,400italic,700" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    </head>
+
+	<body>
+		<script>
+			angular.module('runmodel', ['generalservices', 'numberFilters'])
+			.controller('RunModelController', ['$scope', '$http', 'remote', 'util', function ($scope, $http, remote, util) {
+				$scope.model = {
+					inputs: @Html(Json.toJson(c).toString),
+					resultsId: null
+				};
+
+				var extraParams = @Html(Json.toJson(runParameters).toString);
+				for (var prop in extraParams) {
+					if(extraParams.hasOwnProperty(prop)){
+						BASIC.setOn(prop, extraParams[prop], $scope.model.inputs);
+					}
+				}
+
+                $scope.runStatus = { message : "The Model is Running", num : 0, error : false }
+
+				//reference to the debounced version of getJsonPlus; 
+				//keep only one of these and reuse it to allow it to keep track of all the calls it needs to debounce! 
+				var getJsonPlusDebounced = remote.getJsonPlusDebounced(200);
+
+				$scope.$watch('model.inputs', function() {
+					getJsonPlusDebounced('/model/run2', util.fixTypes($scope.model.inputs),
+                        function() {
+                            $scope.runStatus.num++;
+                        },
+                        function(resultsId) {
+                            $scope.model.resultsId = JSON.parse(resultsId);
+                            $scope.runStatus.message = "The Model is Running"
+                            $scope.runStatus.num--;
+                            $scope.runStatus.error = false
+                        },
+                        function(error, status, headers, input){
+                            $scope.runStatus.message = "An Error Occurred"
+                            $scope.runStatus.num--;
+                            $scope.runStatus.error = true
+                            console.log(status);
+                            console.log(error.responseText);
+                            console.log(error);
+                        });
+				}, true);
+			}]);
+		</script>
+
+	    @header(parent)
+		
+		<div id="content" ng-app="runmodel">
+			<div id="main" ng-controller="RunModelController">
+
+                <div class="alert alert-info simulationStatus" ng-cloak ng-hide="runStatus.num == 0 && !runStatus.error" id="simulationStatusAlert">
+		            {{runStatus.message + " (" + runStatus.num + ")"}}
+                </div>
+
+				@content
+			</div>
+		</div>
+		
+		@footer()
+
+		<script>
+		// styling done via http://getbootstrap.com/customize, setting tooltip-color to black
+		// tooltip-bg and tooltip-arrow-color to the current value of light-blue
+		$('.helptext-input').tooltip();
+		</script>
+	</body>
+</html>
+
+
+

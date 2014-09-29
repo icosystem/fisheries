@@ -1,0 +1,76 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationRunChartData._
+@import charts.lineChart
+@import inputs._
+@import com.icosystem.json._
+
+@disseminationMain("mindorofisheroptimistic", "Fisheries okay in the mid term - Fisheries Supply Chain", "insights", c, 
+	Map(uiConfig.years.id -> 10)) {
+
+<h3 class="breadcrumbs"><a href="@routes.Application.index()">Insights</a> -></h3>
+<h3 class="breadcrumbs">Near and medium term outcomes for the Mindoro fishery</h3>
+
+<h2 class="pagetitle">Short and medium term outcomes for the Mindoro fishery</h2>
+
+<p>According to the data sources we used<a class="ref" href="@routes.Application.aboutMindoroTunaFishery">1</a>, the Mindoro yellowfin tuna fishery is not currently overfished. Municipal fishers are able to cover their living costs, the product of their catch is highly prized by consumers worldwide, and commercial fishers are excluded from the coastal waters fished by municipal fishers. </p>
+<p>The baseline scenario below reflects the best of our knowledge in this fishery. Compare these results to our pessimistic scenario<a class="ref" href="@routes.Application.pessimism">2</a> where we show what will happen if current conditions are worse than the scenario below.
+
+<h3>Modeling Notes</h3>
+
+<p>The following are some of the assumptions reflected here:</p>
+<ul>
+<li><b class="def">Increasing consumer demand</b> We expect that global demand for high grade tuna fish is going to keep growing over the years. There will be both an increase in the global demand for food products and a growth of the middle class, which has a preference for carnivorous fish over other species.
+</li> 
+<li><b class="def">Open access for municipal fishers</b> New fishers can come from other regions and other industries and join in the fishery. No <a href="@routes.Application.inputControls()">input controls</a> are in place. 
+</li>
+<li><b class="def">No commercial fishing growth expected</b> Due to regulations protecting municipal fishers, commercial fleets are currently limited in number and excluded from coastal waters.
+</li>
+<li><b class="def">No technological improvements </b> Even though fishers use traditional methods, some technological improvements could make their boats more efficient. 
+Such effects are not reflected below. They are reflected where we at technology improvement interventions<a class="ref" href="@routes.Application.costVsProductivity">3</a>.
+</li>
+</ul>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Change the length of the simulation to see what the Mindoro tuna fishery might look like at different times in the future</h3>
+		@radioItem(uiConfig.years.id, Map("2025"->"10", "2055"->"40"))
+	</span>
+	<span class="outputs">
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.years.id} == 40">2025 - Fishers could maintain or slightly improve their surplus, but still close to subsistence level</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.years.id} == 10">2055 - Profits passed peak and slowly going down</h3>
+			@lineChart(municipalFisherPerCapitaBottomLineChart.baselineId, "model.resultsId", "Per Capita Bottom Line $", "Years", "$ / household / year")
+		</span>
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.years.id} == 40">2025 - Stocks slightly down</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.years.id} == 10">2055 - Stock starts to show significant drop</h3>
+			@lineChart(fishStockChart.baselineId, "model.resultsId", "Fish Stock", "Years", "Tons")
+		</span>
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.years.id} == 40">2025 - Population slightly up</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.years.id} == 10">2055 - 50% more municipal fishers</h3>
+			@lineChart(municipalFisherPopulationChart.baselineId, "model.resultsId", "Population", "Years", "# of households")
+		</span>
+	</span>
+</span>
+
+}

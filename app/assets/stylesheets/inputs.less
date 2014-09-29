@@ -1,0 +1,156 @@
+@import "constants.less";
+@import "mixins.less";
+
+/* -------------
+/     
+/     Inputs:
+/     input container, form elements
+/     
+/     
+------------ */
+.inputs-section-setup {
+	background-color: @dark-blue;
+	padding: 1px 25px 5px 25px;
+	margin-bottom: 2em;
+}
+
+@media only screen and (max-width: 1459px) {
+	.input-pane {
+		top: 0;
+		left: 0;
+		position: absolute;
+		display: block;
+		width: @input-pane-size-small;
+		
+		color: @light-blue;
+		font-size: 12px;
+	}
+}
+
+@media only screen and (min-width: 1460px) {
+	.input-pane {
+		top: 0;
+		left: 0;
+		position: absolute;
+		display: block;
+		width: @input-pane-size;
+		
+		color: @light-blue;
+		font-size: 12px;
+	}
+}
+	
+.step-size-selector {
+	float: right;
+	font-weight: normal;
+}
+.slider-value-label {
+	float: right;
+	.input-text-dynamic;
+}
+.control-label {
+	font-weight: normal;
+	display: block;
+}
+.quota-slider-label {
+	padding-top: 12px;
+}
+
+.radio-label {
+	padding-top: 2px;
+	font-weight: normal;
+}
+
+.input-section {
+	margin-bottom: 4em;
+	.input-section-header {
+		h3 {
+			color: white;
+			font-weight: normal;
+			text-transform:uppercase;
+			padding-bottom: 0.2em;
+			margin-bottom: 0;		
+		}
+		p {
+			color: white;
+			opacity: 0.9;
+			font-size: 0.9em;
+			font-style: italic;
+			font-weight: normal;
+			padding: 0 0 0.2em 0;
+			margin: 0;
+		}
+	
+		margin-bottom: 0.5em;	
+		border-bottom: 2px solid rgba(255,255,255,0.2);
+	}
+	.alert {
+		margin-top: 20px;
+	}
+	.input-item {
+		margin-bottom: 1em;
+
+		.named-slider {
+			padding-top: 19px;
+			position: relative;
+			
+			input[type="range"] {
+				margin-left: auto;
+    				margin-right: auto;
+				display: block;
+			}
+			
+			.left-slider-label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				.font-small;
+			}
+			.right-slider-label {
+				position: absolute;
+				top: 0;
+				right: 0;
+				.font-small;
+			}
+		}
+		.phasing-slider {
+			padding-bottom: 25px;
+			display: block;
+		}
+		.ranged-slider-phasing-label {
+			display: block;
+			.font-small;
+			margin-bottom: 4px;
+		}
+		.ranged-slider-label { 
+			display: block;
+			float: right;
+			max-width: 15em;
+			margin-top: -10px;
+			
+			.input-text-dynamic;
+		}
+		.ui-slider-label {color: @light-blue; }
+	}
+}
+.inputs .input-section:last-child {
+	margin-bottom: 0;
+}
+.slider-with-min-max-labels {
+	padding-top: 19px;
+	display: inline-block;
+	position: relative;
+
+	.left-slider-label {
+		position: absolute;
+		top: 0;
+		left: 0;
+		.font-small;
+	}
+	.right-slider-label {
+		position: absolute;
+		top: 0;
+		right: 0;
+		.font-small;
+	}
+}

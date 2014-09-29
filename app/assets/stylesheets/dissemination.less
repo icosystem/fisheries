@@ -1,0 +1,42 @@
+@import "constants.less";
+@import "mixins.less";
+
+/* Center Column */
+body {
+	background-color: white;
+	min-width: 900px;
+	max-width: 1400px;
+	margin: 0 auto;
+	min-height: 100%;
+} 
+
+h3 {
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+ul { 
+	list-style: circle;
+	margin-left: 2.5em;
+	margin-bottom: 1.5em;
+	padding-left: 0;
+	
+	li {
+		margin-bottom: 0.5em; 
+	}
+}
+
+/* -------------
+/
+/     Simulation status
+/
+/
+------------ */
+.simulationStatus {
+  position: fixed;
+  top: 150px;
+  right: 200px;
+  min-width: 20em;
+  border-radius: 0px;
+  z-index: 100;
+}

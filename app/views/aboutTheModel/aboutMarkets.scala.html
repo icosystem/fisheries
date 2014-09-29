@@ -1,0 +1,79 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationRunChartData._
+@import inputs._
+@import charts._
+
+@disseminationMain("aboutmarket", "About Markets - Fisheries Supply Chain", "aboutthemodel", c) {
+
+<div class="navigation">
+    <div class="breadcrumbs">
+        <h3 class="breadcrumbs"><a href="@routes.Application.aboutTheModel()">About the Model</a> -></h3> <h3 class="breadcrumbs">About Markets</h3>
+    </div>
+    <div class="next">
+        <h3 class="next">Previous:</h3> <h3 class="next"><a href="@routes.Application.aboutCommercialFishers()">About Commercial Fishers</a></h3>
+        <h3 class="next">Next:</h3> <h3 class="next"><a href="@routes.Application.aboutMiddlemen()">About Middlemen</a></h3>
+    </div>
+</div>
+
+<h2 class="pagetitle">About Markets</h2>
+
+<p>As fish move along the supply chain, from fishers to middlemen to exporters to consumers, the yellowfin tuna in our model are traded three times. 
+At each trading point or <i>market</i>, prices are negotiated and fluctuate with supply and demand	 as the fish product changes hands. </p>
+
+<p> We have arbitrarily named each market after the buyers: the <i>middleman market</i>, the <i>exporter market</i>, and the <i>consumer market</i>. </p>
+ 
+<p>Each market has a current price, and tracks the volume of fish traded. Suppliers bring the fish to sell, and buyers bring a demand for fish. If demand outstrips supply, they negotiate a higher price. If there is a surplus of supply, prices drop and part of the product may get spoiled.</p>  
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Move the initial conditions between under-fishing and over-fishing to see how markets react to changes in supply and demand.</h3>
+		@qualitativeSliderWithNumber(uiConfig.ratioOfCatchToGrowthOfCurrentStock.id, uiConfig.ratioOfCatchToGrowthOfCurrentStock.min, uiConfig.ratioOfCatchToGrowthOfCurrentStock.max, uiConfig.ratioOfCatchToGrowthOfCurrentStock.step, uiConfig.ratioOfCatchToGrowthOfCurrentStock.label, uiConfig.ratioOfCatchToGrowthOfCurrentStock.units, uiConfig.ratioOfCatchToGrowthOfCurrentStock.filter, uiConfig.ratioOfCatchToGrowthOfCurrentStock.leftLabel, uiConfig.ratioOfCatchToGrowthOfCurrentStock.rightLabel)
+	</span>
+	
+	<span class="outputs">
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} != 1"> When neither over- not under-fishing, catch is relatively stable, </h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} >= 1"> When under-fishing, catch increases as fish stocks rebound, </h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} <= 1"> When over-fishing, catch drops over time,</h3>
+			@lineChart(municipalFisherCatchChart.baselineId, "model.resultsId", "Catch", "Years", "Tons")
+		</span>
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} != 1"> as are prices </h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} >= 1"> more supply bring prices down</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} <= 1"> lack of supply drives prices up</h3>
+			@lineChart(middlemanMarketPriceChart.baselineId, "model.resultsId", "Middle Market Price", "Years", "$ / ton traded")
+		</span>
+		<span class="chartcontainer">
+			@lineChart(exporterMarketPriceChart.baselineId, "model.resultsId", "Export Market Price", "Years", "$ / ton traded")
+		</span>
+		<span class="chartcontainer">
+			@lineChart(consumerMarketPriceChart.baselineId, "model.resultsId", "Consumer Market Price", "Years", "$ / ton traded")
+		</span>
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} != 1"> and total consumer demand. </h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} >= 1"> and consumer demand rises due to falling prices. </h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} <= 1"> and consumer demand shrinks due to rising prices. </h3>
+			@lineChart(consumerDemandChart.baselineId, "model.resultsId", "Consumer Demand", "Years", "Tons / year")
+		</span>
+	</span>
+</span>
+}

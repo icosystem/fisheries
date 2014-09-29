@@ -1,0 +1,31 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(id: String, radioValues: Map[String, String], helpText: Option[String] = None, ngHide: Option[String] = None)
+
+@import tags._
+
+<div class="input-item">
+	<div@for(eq <- ngHide){ ng-hide="@eq"}>
+		@for(option <- radioValues){
+		<input type="radio" ng-model="model.inputs.@{id}" id="@{id + "_" + option._2}" value="@option._2">
+		<label class="radio-label" for="@{id + "_" + option._2}"> @option._1</label><br/>
+		}
+		@for(text <- helpText){@helpWidget(text)}
+	</div>
+</div>

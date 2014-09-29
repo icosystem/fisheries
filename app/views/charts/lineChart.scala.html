@@ -1,0 +1,118 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(id: String, resultsIdPath: String, title: String, hLabel: String, vLabel: String)
+
+<div id="@id" class="chart"></div>
+
+<script>
+(function () {
+	var watchSet = false;
+	var dataArray = null;
+
+	if(typeof(jQuery) != 'undefined' && typeof(google) != 'undefined' && typeof(angular) != 'undefined'){
+	    function drawChart() {
+	    		if(!watchSet){
+				watchSet = true;
+			    var scope = angular.element($("#main")).scope();
+			    	scope.$watch('@resultsIdPath', function() {
+					var resultsId = scope.@resultsIdPath;
+					REMOTE.requestResultTable(resultsId, '@id', function(data) {
+						dataArray = data;
+						drawChart();
+					});
+		    		});
+	    		}
+	    
+	    		if(Object.prototype.toString.call(dataArray) === '[object Array]'){
+				var data = google.visualization.arrayToDataTable(dataArray);
+				
+				var options = {
+					'explorer': { actions: ['dragToZoom', 'rightClickToReset'], keepInBounds: true, maxZoomIn: .001 },
+					'title' : '@title',
+					'titleTextStyle' : {
+						color : '#333',
+						bold : true,
+						italic : false,
+						fontSize : 16
+					},
+					'width' : 515,
+					'height' : 300,
+					'chartArea': {left:100, width: 265}, 
+					/*'colors' :  colors,*/
+					
+					'hAxis' : {
+						title : '@hLabel',
+						gridlines : {
+							color : 'transparent'
+						},
+						baselineColor : '#ccc',
+						titleTextStyle : {
+							color : '#333',
+							bold : false,
+							italic : false,
+							fontSize : 12
+						},
+						textStyle : {
+							color : '#333',
+							bold : false,
+							italic : false,
+							fontSize : 9
+						}
+					},
+					'vAxis' : {
+						title : '@vLabel',
+						minValue : 0,
+						gridlines : {
+							color : 'transparent'
+						},
+						baselineColor : '#ccc',
+						titleTextStyle : {
+							color : '#333',
+							bold : false,
+							italic : false,
+							fontSize : 12
+						},
+						textStyle : {
+							color : '#333',
+							bold : false,
+							italic : false,
+							fontSize : 9
+						},
+						format : '####'
+					},
+					'legend' : {
+						'textStyle' : {
+							fontSize : 10,
+							bold : false,
+							italic : false
+						}
+					}
+				};
+	
+				var chart = new google.visualization.LineChart(document.getElementById('@id'));
+				chart.draw(data, options);
+	    		}
+	    }
+
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+    }
+}());
+</script>
+

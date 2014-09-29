@@ -1,0 +1,65 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationRunChartData._
+@import charts._
+@import inputs._
+@import scala.collection.Map._
+
+@disseminationMain("aboutcommercialfishers", "About Commercial Fishers - Fisheries Supply Chain", "aboutthemodel", c) {
+
+<div class="navigation">
+    <div class="breadcrumbs">
+        <h3 class="breadcrumbs"><a href="@routes.Application.aboutTheModel()">About the Model</a> -></h3> <h3 class="breadcrumbs">About Commercial Fishers</h3>
+    </div>
+    <div class="next">
+        <h3 class="next">Previous:</h3> <h3 class="next"><a href="@routes.Application.aboutMunicipalFishersOptimistic()">About Municipal Fishers</a></h3>
+        <h3 class="next">Next:</h3> <h3 class="next"><a href="@routes.Application.aboutMarkets()">About Markets</a></h3>
+    </div>
+</div>
+
+<h2 class="pagetitle">About Commercial Fishers</h2>
+
+<p>Commercial fishers are larger-scale fishing operations that are managed as a business, with larger fleets linked to global markets. </p>
+
+<p>In Mindoro, commercial fishing operations, defined mainly by the size of their vessels, are barred from municipal waters in order to protect local municipal fisheries. 
+However, as tuna are migratory fish that move between waters, in practice both commercial and municipal fishers are exploiting the same fish stock. Other Philippines tuna fisheries have in the past collapsed after over-exploitation by commercial fishers.</p>
+
+<p>Intrusion of commercial fishing operations, as well as stock overfishing, can have devastating effects on small-scale fisheries. The interventions modeled here, such as providing education, technology, or organization skills to municipal fishers, are powerless against stock destruction by encroaching commercial fishing.</p>
+
+<p>The model baseline assumes that commercial fishing is regulated and will not grow further, thus leaving a fixed part of the fish stock to be exploited by municipal fishers. Explore the model to see how even a modest growth rate in the commercial fishing fleet leads to stock collapse and loss of fishing income.</p>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Change the rate of growth of commercial fishers to see the effect on fish and fishers</h3>
+		@quantitativeSlider(uiConfig.growthRateCommercialFisher.id, uiConfig.growthRateCommercialFisher.min, uiConfig.growthRateCommercialFisher.max, uiConfig.growthRateCommercialFisher.step, uiConfig.growthRateCommercialFisher.label, uiConfig.growthRateCommercialFisher.units, uiConfig.growthRateCommercialFisher.filter, uiConfig.growthRateCommercialFisher.helpText)
+	</span>
+	
+	<span class="outputs">
+		<span class="chartcontainer">
+			@lineChart(fishStockChart.baselineId, "model.resultsId", "Stock", "Years", "Tons")
+		</span>
+		<span class="chartcontainer">
+			@lineChart(municipalFisherPerCapitaFishingMoneyChart.baselineId, "model.resultsId", "Municipal per Capita Fishing Income", "Years", "$ / household / year")
+		</span>
+	</span>
+</span>
+
+}

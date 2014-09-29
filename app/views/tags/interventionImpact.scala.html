@@ -1,0 +1,66 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@import model.SimulationOverviewData._
+@import controllers.SimulationResultsUI.overview
+
+@()
+
+<script>
+	if (!FISHERY) {
+		var FISHERY = {};
+	}
+	if (!FISHERY.rangeCharts) {
+		FISHERY.rangeCharts = [];
+	}
+</script>
+
+<h2 class="chart-section-title">Overview</h2>
+@summaryItem(name: String, friendly: String) = {
+	<tr class="summary-results-item">
+		<td class="cell"><h3 class="name">@friendly</h3></td>
+		<td class="cell glyph second-column"><div id="@{name + "-range-baseline-chart"}"></td>
+		<td class="cell glyph third-column"><div id="@{name + "-range-chart"}"></td>
+		<script>
+			/* draw() is called in controllers.js */
+			FISHERY.rangeCharts.push(FISHERY.rangeGlyphChart('@name', '#@{name + "-range-chart"}', @MAX_GLYPH));
+			FISHERY.rangeCharts.push(FISHERY.rangeBaselineGlyphChart('@name', '#@{name + "-range-baseline-chart"}', @MAX_GLYPH));
+		</script>
+	</tr>
+}
+<table class="summary-results-items" cellspacing="0" cellpadding="0">
+	<tr class="summary-results-header">
+		<th></th>
+		<th class="second-column header">Baseline</th>
+		<th class="third-column header">Impact of Intervention</th>
+	</tr>
+
+	@summaryItem(fishStock, "Fish Stock")
+	@summaryItem(totalMunicipalHarvest, "Total Catch")
+	@summaryItem(municipalFisherPopulation, "Municipal Fisher Population")
+	@summaryItem(municipalFisherProfitPerCapita, "Municipal Fisher Per-Capita Profit")
+	@summaryItem(municipalFisherSurplusPerCapita, "Municipal Fisher Per-Capita  Surplus")
+	@summaryItem(consumerDemandPer1000, "Consumer Per-Capita Fish")
+</table>
+<p class="summary-results-legend">
+	# of red/green arrows represents the relative impact of intervention by simulation end vs baseline<br>
+	<i class="fa fa-arrow-up off"></i><i class="fa fa-arrow-down off"></i> intervention value has no/minimal change by simulation end relative to baseline<br>
+	<i class="fa fa-arrow-up increase"></i><i class="fa fa-arrow-down decrease"></i> intervention value increases/decreases by simulation end relative to baseline<br>
+	<i class="fa fa-arrow-up better-than-start"></i><i class="fa fa-arrow-down worse-than-start"></i> intervention value increases/decreases by simulation end relative to simulation start<br>
+	<i class="fa fa-circle-o baselineBetterThanStart"></i><i class="fa fa-circle-o baselineWorseThanStart"></i> baseline value increases/decreases by simulation end relative to simulation start<br>
+</p>

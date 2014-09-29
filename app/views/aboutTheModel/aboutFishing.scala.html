@@ -1,0 +1,83 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationRunChartData._
+@import inputs._
+@import charts._
+
+@disseminationMain("aboutfishers", "About Fishing - Fisheries Supply Chain", "aboutthemodel", c) {
+
+<div class="navigation">
+    <div class="breadcrumbs">
+        <h3 class="breadcrumbs"><a href="@routes.Application.aboutTheModel()">About the Model</a> -></h3> <h3 class="breadcrumbs">About Fishing</h3>
+    </div>
+    <div class="next">
+        <h3 class="next">Previous:</h3> <h3 class="next"><a href="@routes.Application.aboutTunaGrowth()">About Tuna Stock Growth</a></h3>
+        <h3 class="next">Next:</h3> <h3 class="next"><a href="@routes.Application.aboutMunicipalFishersOptimistic()">About Municipal Fishers</a></h3>
+    </div>
+</div>
+
+<h2 class="pagetitle">About Fishing</h2>
+
+<p>Fishing is removing fish from the ocean waters. Fish stocks are continuously being depleted by fishing, while at the same time they are regrowing due to fish reproduction.</p>
+
+
+
+<p>Even though Philippino regulations reserve the coastal waters solely for municipal fishers, tuna is a migratory fish that moves between coastal and non-coastal waters. In the model, we make the assumption that
+municipal fishers<a class="ref" href="@routes.Application.aboutMunicipalFishersOptimistic">1</a> as well as commercial fishers<a class="ref" href="@routes.Application.aboutCommercialFishers">2</a> both remove fish from the
+same fish stock. Overfishing by either group of fishers yields to fish scarcity for both.</p>
+
+<p>The products of fishing differ. Municipal fishers, who catch primarily adult fish, produce <b class="def">sashimi-grade</b> tuna to be sold fresh to consumers. Commercial fishers catch mainly juveniles for the canning and packing industries. </p>
+
+
+<h3>Key Parameters and Observables</h3>
+
+<ul>
+<li><b class="def">Population</b> Each fisher group is represented by a <b class="def">population</b>.  For municipal fishers, this is represented as a number of fishing families.  For commercial fishers, this is represented as a number of boats in the commercial fishing fleet.</p>
+<li><b class="def">Effort</b> The number of hours that fishers, municipal as well as commercial, dedicate to fishing, adding together all populations active in the fishery.</li> 
+<li><b class="def">Catch per unit of effort (CPUE)</b> The product of fishing, in tonnes of fish extracted, for each hour of effort.</li> 
+<li><b class="def">Catchability coefficient</b> The CPUE is dependent of two factors: the fish stock (so that the more abundant fish are, the easier it is to catch them) and a <b class="def">catchability coefficient</b>, which models the relative efficiency of the fishing gear in removing fish from the water. </li>
+<li><b class="def">Catch</b> The total tonnage of fish that is taken out of the water and into the fishing boats. </li>
+</ul>
+
+<p>Effort and population may both change over time, as governed by the logic of municipal and commercial fishers. Stocks go up or down over time under the combined effect of catch and reproduction. The catchability coefficient remains constant over the years, unless the efficiency of the boats changes.  (e.g., With interventions that improve the quality of their fishing gear.)</p>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Move the slider below to increase the efficiency of fishing boats</h3>
+        @qualitativeSlider(uiConfig.interventionProductivity.id, uiConfig.interventionProductivity.min, uiConfig.interventionProductivity.max, uiConfig.interventionProductivity.step, uiConfig.interventionProductivity.label, uiConfig.interventionProductivity.units, uiConfig.interventionProductivity.filter, uiConfig.interventionProductivity.helpText)
+	</span>
+	
+	<span class="outputs">
+        <span class="chartcontainer">
+            <h3 ng-show="model.inputs.@{uiConfig.interventionProductivity.id}.endValue == 0"> When fishing effort remains constant, fish stocks stay in equilibrium</h3>
+            <h3 ng-show="model.inputs.@{uiConfig.interventionProductivity.id}.endValue != 0"> When fishing boats become more efficient, catch goes up which reduces the fish stock</h3>
+            @lineChart(fishStockChart.interventionId, "model.resultsId", "Stock", "Years", "Tons")
+        </span>
+		<span class="chartcontainer">
+            <h3 ng-show="model.inputs.@{uiConfig.interventionProductivity.id}.endValue == 0"> With fishing effort and stocks constant, fish catch remains in equilibrium</h3>
+            <h3 ng-show="model.inputs.@{uiConfig.interventionProductivity.id}.endValue != 0"> When fishing boats become more efficient, catch goes up in the beginning, but then falls as a consequence of the impact on fish stocks</h3>
+			@lineChart(fishHarvestChart.interventionId, "model.resultsId", "Total Catch", "Years", "Tons / Year")
+		</span>
+	</span>
+</span>
+
+}
+

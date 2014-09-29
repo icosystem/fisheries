@@ -1,0 +1,101 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationRunChartData._
+@import charts._
+@import inputs._
+@import scala.collection.Map._
+@import controllers.initial._
+@import controllers.initial.UIInputConfigDefaults._
+
+@disseminationMain("aboutmunicipalfishers", "About Municipal Fishers - Fisheries Supply Chain", "aboutthemodel", c) {
+
+<div class="navigation">
+    <div class="breadcrumbs">
+        <h3 class="breadcrumbs"><a href="@routes.Application.aboutTheModel()">About the Model</a> -></h3> <h3 class="breadcrumbs">About Municipal Fishers</h3>
+    </div>
+    <div class="next">
+        <h3 class="next">Previous:</h3> <h3 class="next"><a href="@routes.Application.aboutFishing()">About Fishing</a></h3>
+        <h3 class="next">Next:</h3> <h3 class="next"><a href="@routes.Application.aboutCommercialFishers()">About Commercial Fishers</a></h3>
+    </div>
+</div>
+
+<h2 class="pagetitle">About Municipal Fishers</h2>
+
+<p>Municipal fishers are at the heart of the simulation. Every day, simulated municipal fishers make decisions as they go about their lives: to go fishing or not, or seek an alternative type of livelihood.</p>
+
+<p>Fishers have to support their families, for which fishing is the principal means of sustenance. Some of the fish is consumed as food, or traded within the village, but most of it is quickly sold to middlemen to be exported as sashimi-grade tuna.</p>
+
+
+<h3>Fishing Profits</h3>
+
+<p>Currently, fishers in Mindoro are at or near the subsistence line, their income sufficient to make a living but not to make great profits. Fishing income depends on the number of hours fishers spend at sea (effort), the abundance of fish in the ocean (fish stock), the efficiency of their fishing gear, and the selling price of the fish in the middlemen market.</p>
+
+<p>Switch between scenarios to see how they impact fishers livelihoods:</p>
+<ul>
+    <li>The optimistic scenario reflects the current situation in Mindoro</li>
+    <li>The pessimistic scenario reflects conditions more adverse to fisher families</li>
+</ul>
+
+<h3>Understanding the charts</h3>
+<h4>Per Capita Surplus after Living Costs</h4>
+
+<p>This chart adds up all the sources of income that fishers' families receive. This includes fishing profits as well as other sources of income, including <a href="@routes.Application.alternativeLivelihoods()">alternative livelihoods</a></p>
+<p>Families’ subsistence expenses are subtracted, so that the zero line represents a subsistence income level. Higher incomes are positive, whereas under-subsistence incomes are negative.</p>
+<p>When fishers’ incomes fall below subsistence, they will put in additional effort, by spending more hours at sea,  in an attempt to compensate for the income loss. However, when stocks are fully exploited or overfished, such extra effort will make fish stocks fall even faster.</p>
+
+<h4>Population</h4>
+
+<p>The population of  municipal fishers is not a constant. When profits are high, and fishing is a profitable occupation, new fishers and new boats start joining the fishery due to internal migration as well as intrinsic population growth. Conversely, when profits are below subsistence, the number of fishing households declines. However, there is a core community that is not capable of living for many reasons (cultural, age, socioeconomic level, etc.), and they remain fishers, even in bad times.</p>
+
+<span class="column-container">
+    <span class="inputs" id="inputs">
+        <h3>Switch between scenarios to see how they impact fishers livelihoods</h3>
+
+        <span class="scenario-list">
+            <div class="scenario-link @if(uiConfig.i.uiInputConfig == Mindoro.uiInputConfig){scenario-link-active}">
+                <a href="@routes.Application.aboutMunicipalFishersOptimistic()#inputs">
+                    @if(uiConfig.i.uiInputConfig == Mindoro.uiInputConfig){<span class="glyphicon glyphicon-asterisk"></span>} Case Study: Mindoro Fishery, Optimistic Scenario
+                </a>
+            </div>
+            <div class="scenario-link @if(uiConfig.i.uiInputConfig == PessimisticMindoro.uiInputConfig){scenario-link-active}">
+                <a href="@routes.Application.aboutMunicipalFishersPessimistic()#inputs">
+                    @if(uiConfig.i.uiInputConfig == PessimisticMindoro.uiInputConfig){<span class="glyphicon glyphicon-asterisk"></span>} Case Study: Mindoro Fishery, Pessimistic Scenario
+                </a>
+            </div>
+        </span>
+
+    </span>
+
+    <span class="outputs">
+        <span class="chartcontainer">
+            @if(uiConfig.i.uiInputConfig == Mindoro.uiInputConfig){<h3> With healthy fish stocks, fishing profits per family are relatively stable. </h3>}
+            @if(uiConfig.i.uiInputConfig == PessimisticMindoro.uiInputConfig){<h3> When stocks become overfished, fishing profits fall below subsistence. </h3>}
+            @lineChart(municipalFisherFishingPerCapitaSurplusChart.baselineId, "model.resultsId", "Per Capita Fishing Surplus", "Years", "$ / household / year")
+        </span>
+        <span class="chartcontainer">
+            @if(uiConfig.i.uiInputConfig == Mindoro.uiInputConfig){<h3> When fishing is profitable, the population of a fishery may go up over time due to global growth in consumer demand. </h3>}
+            @if(uiConfig.i.uiInputConfig == PessimisticMindoro.uiInputConfig){<h3> When fishing is not profitable, the population of a fishery may go down over time due to people looking for opportunities elsewhere. However, not everybody is capable of leaving. </h3>}
+            @lineChart(municipalFisherPopulationChart.baselineId, "model.resultsId", "Population", "Years", "# of households")
+        </span>
+    </span>
+</span>
+
+}

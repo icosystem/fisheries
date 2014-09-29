@@ -1,0 +1,98 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationComparisonChartData._
+@import charts.lineChart
+@import inputs._
+@import com.icosystem.json._
+@import controllers.LimitEntriesValues
+@import controllers.UseTotalAllowableCatchValues
+
+@disseminationMain("quotasinputcontrolsalone", "Alternative Livelihoods - Fisheries Supply Chain", "insights", c, 
+	Map(uiConfig.years.id -> 30,
+        uiConfig.ratioOfStockToK.id -> 0.4,
+        uiConfig.ratioOfCatchToGrowthOfCurrentStock.id -> 1.2,
+        uiConfig.interventionFinancialBenefitOfAlternative.id + ".endValue" -> 1,
+        uiConfig.interventionFinancialBenefitOfAlternative.id + ".startYear" -> 0,
+        uiConfig.interventionFinancialBenefitOfAlternative.id + ".endYear" -> 0,
+        uiConfig.interventionNumberOfPeopleTrained.id + ".endValue" -> 1,
+        uiConfig.interventionNumberOfPeopleTrained.id + ".startYear" -> 0,
+        uiConfig.interventionNumberOfPeopleTrained.id + ".endYear" -> 0,
+        uiConfig.interventionAlternativeJobWorkload.id + ".endValue" -> 1,
+        uiConfig.interventionAlternativeJobWorkload.id + ".startYear" -> 0,
+        uiConfig.interventionAlternativeJobWorkload.id + ".endYear" -> 0,
+        uiConfig.interventionAlternativeJobsAvailable.id + ".startYear" -> 0,
+        uiConfig.interventionAlternativeJobsAvailable.id + ".endYear" -> 0)
+    ) {
+
+<h3 class="breadcrumbs"><a href="@routes.Application.index()">Insights</a> -></h3>
+<h3 class="breadcrumbs">Alternative Livelihoods</h3>
+
+<h2 class="pagetitle">When overfishing is present, alternative livelihoods are the most promising type of intervention</h2>
+
+<p>When stocks have become overfished, fisheries can no longer recover on their own. Fishing communities with no alternative income sources will continue to fish a dwindling resource. Input controls are not effective because the stock decay is now self-reinforcing and is not caused by new boats or fishing gear arriving in the fishery. (See <a href="input-cant-restore">Input controls by themselves</a>.)</p>
+
+<p>Interventions providing alternative means of livelihood can help in this situation, taking part of the community permanently or temporarily away from fishing by providing profitable alternatives. As stocks recover, fishing revenue rebounds as well, which means that the intervention does not need to remain in place forever. </p>
+
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Simulate an intervention providing alternative work (move slider to max), then limiting the number of fishing vessels</h3>
+        @qualitativeSlider(uiConfig.interventionAlternativeJobsAvailable.id, uiConfig.interventionAlternativeJobsAvailable.min, uiConfig.interventionAlternativeJobsAvailable.max, uiConfig.interventionAlternativeJobsAvailable.step, uiConfig.interventionAlternativeJobsAvailable.label, uiConfig.interventionAlternativeJobsAvailable.leftLabel, uiConfig.interventionAlternativeJobsAvailable.rightLabel)
+        @quotaInterventionItem(uiConfig.interventionLimitEntries, uiConfig.interventionUseTotalAllowableCatch.copy(visible = false), uiConfig.interventionTotalAllowableCatch)
+	</span>
+	
+	<span class="outputs">
+		<span class="chartcontainer">
+            <h3 ng-show="
+            model.inputs.@{uiConfig.interventionAlternativeJobsAvailable.id}.endValue == 0 &&
+            model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'
+            "> In this overfished scenario stocks are collapsing </h3>
+            <h3 ng-show="
+            model.inputs.@{uiConfig.interventionAlternativeJobsAvailable.id}.endValue != 0 &&
+            model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'
+            "> When alternative occupations were provided, people fish less because it is not very profitable</h3>
+            <h3 ng-show="
+            model.inputs.@{uiConfig.interventionAlternativeJobsAvailable.id}.endValue != 0 &&
+            model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2'
+            "> Combining alternative livelihoods with input controls, stocks are stabilized and the fish exploited in a sustainable manner</h3>
+
+            @lineChart(biomassBaselineVsInterventionComparisonChart.comparisonId, "model.resultsId", "Fish Stock", "Years", "Tons")
+		</span>
+        <span class="chartcontainer">
+            <h3 ng-show="
+            model.inputs.@{uiConfig.interventionAlternativeJobsAvailable.id}.endValue == 0 &&
+            model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'
+            "> Stocks collapsed, family incomes are below the subsistence line </h3>
+            <h3 ng-show="
+            model.inputs.@{uiConfig.interventionAlternativeJobsAvailable.id}.endValue != 0 &&
+            model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'
+            "> Providing income sources has brought families back above subsistence line </h3>
+            <h3 ng-show="
+            model.inputs.@{uiConfig.interventionAlternativeJobsAvailable.id}.endValue != 0 &&
+            model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2'
+            "> Combining alternative livelihoods with input controls, family incomes are temporarily propped by the intervention, but then continue to grow as the fishery recovers its profitability </h3>
+
+            @lineChart(perFisherSurplusComparisonChart.comparisonId, "model.resultsId", "Per Capita Surplus after Living Costs", "Years", "$ / household / year")
+        </span>
+	</span>
+</span>
+
+}

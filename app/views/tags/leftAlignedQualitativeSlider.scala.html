@@ -1,0 +1,32 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(scientist: Boolean, item: controllers.InputConfig)
+
+@import tags._
+
+<div class="input-item @if(!item.visible && !scientist){ visuallyhidden}">
+	<label class="control-label" for="@item.id">
+		@item.label
+		@for(text <- item.helpText){@helpWidget(text)}
+	</label>
+	<span class="slider-with-min-max-labels">
+		<div class="left-slider-label">@item.leftLabel</div><div class="right-slider-label">@item.rightLabel</div>
+		<input type=range ng-model="config.@item.id" id="@item.id" min="@item.min" max="@item.max" step="@item.step">
+	</span>
+</div>

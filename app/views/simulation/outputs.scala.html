@@ -1,0 +1,139 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(infotable: Boolean)
+
+@import tags._ 
+@import model.SimulationRunChartData._
+@import model.SimulationComparisonChartData._
+@import model.SimulationAnimatedChartData._
+@import model.SimulationOverviewData._
+@import controllers.SimulationResultsUI.baseline
+@import controllers.SimulationResultsUI.interventions
+@import controllers.SimulationResultsUI.comparison
+@import controllers.SimulationResultsUI.animated
+@import controllers.SimulationResultsUI.overview
+
+
+<div class="output-pane" ng-controller="OutputsCtrl" id="OutputsCtrl">
+	<div class="alert alert-info simulationStatus" ng-show="status.statusMessageVisible" id="simulationStatusAlert">
+		{{status.message}}
+	</div>
+
+	<ul class="nav nav-tabs input-tabs">
+		<li class="active"><a href="#results-comparison" data-toggle="tab">Impact Overview</a></li>
+ 		<li><a href="#results-sidebyside" data-toggle="tab">Details</a></li>
+	</ul>
+	
+	<div class="tab-content" id="results-comparison-tab-content">
+		<div class="tab-pane active" id="results-comparison">
+			@interventionImpact()
+				
+			@chartSection(infotable, "Stock", comparison)(Seq(biomassComparisonChart, fisherTotalCatchComparisonChart))
+			@chartSection(infotable, "Municipal Fisher", comparison)(Seq(fisherPopulationComparisonChart, perFisherSurplusComparisonChart, perFisherProfitsComparisonChart, perFisherAlternativeLivelihoodIncomeChart))
+			@chartSection(infotable, "Middleman", comparison)(Seq(middlemanTotalProfitsComparisonChart))
+			@chartSection(infotable, "Exporter", comparison)(Seq(exporterTotalProfitsComparisonChart))
+			@chartSection(infotable, "Consumer", comparison)(Seq(consumerDemandPer1000Chart))
+			@chartSection(infotable, "All", comparison)(Seq(allTotalProfitsComparisonChart))
+			@chartSection(infotable, "Rent Capture", animated)(Seq(rentCaptureComparison))
+			<div class="">
+				<label class="control-label" for="animationControl">Animation Control</label>
+				<input type=range id="animationFrameSlider" ng-model="animationFrame" min="0" max="{{animationLength}}" step="1">
+			</div>
+		</div>
+		<div class="tab-pane" id="results-sidebyside">
+			<script>
+				var sidebysidechartopen = true;
+				var sidebysidecharttoggle = function() {
+					sidebysidechartopen = !sidebysidechartopen;
+					if(sidebysidechartopen){
+						$('.sidebysidechartrow').collapse('show');
+						$('.sidebysidechartsection').collapse('show');
+					}else{
+						$('.sidebysidechartrow').collapse('hide');
+						$('.sidebysidechartsection').collapse('hide');
+					}						
+				}				
+			</script>
+			<a href="#" onclick="sidebysidecharttoggle();"><i class="fa fa-sort fa-fw"></i>&nbsp; Show/Hide All</a><br><br>
+		
+			@sideBySideChartSection(infotable, "Municipal Fisher", "municipalFisher", baseline, interventions)(Seq(
+				municipalFisherProfitabilityChart, 
+				municipalFisherAlternativeLivelihoodEffortChart, 
+				municipalFisherFishingEffortChart, 
+				municipalFisherCombinedTotalCommunityEffortChart, 
+				municipalFisherCombinedPerCapitaEffortChart, 
+				municipalFisherCatchChart, 
+				municipalFisherCatchPerUnitEffortChart, 
+				municipalFisherPerCapitaFishingMoneyChart, 
+				municipalFisherIncomingMoneyBreakdownChart, 
+				municipalFisherPerCapitaBottomLineChart, 
+				//municipalFisherPerCapitaAlternativeLivelihoodIncomeChart, 
+				municipalFisherPopulationBreakdownChart,
+
+				//municipalFisherTotalVolumeChart, 
+				//municipalFisherPerCapitaVolumeChart, 
+				//municipalFisherPopulationChart, 
+				municipalFisherCatchBreakdown,
+				municipalFisherPriceNegotiationStressChart, 
+				municipalFisherPriceNegotiationStatusLineChart 
+				))
+			@sideBySideChartSection(infotable, "Fish", "fish", baseline, interventions)(Seq(fishStockChart, fishHarvestChart, fishSpoiledChart))
+			@sideBySideChartSection(infotable, "Middleman Market", "middlemanMarket", baseline, interventions)(Seq(middlemanMarketVolumeChart, middlemanMarketPriceChart, middlemanMarketValueChart))
+			@sideBySideChartSection(infotable, "Middlemen", "middlemen", baseline, interventions)(Seq(middlemanVolumeChart, middlemanProfitChart))
+			@sideBySideChartSection(infotable, "Exporter Market", "exporterMarket", baseline, interventions)(Seq(exporterMarketVolumeChart, exporterMarketPriceChart, exporterMarketValueChart))
+			@sideBySideChartSection(infotable, "Exporters", "exporters", baseline, interventions)(Seq(exporterVolumeChart, exporterProfitChart))
+			@sideBySideChartSection(infotable, "Consumer Market", "consumerMarket", baseline, interventions)(Seq(consumerMarketVolumeChart, consumerMarketPriceChart, consumerMarketValueChart))
+			@sideBySideChartSection(infotable, "Consumers", "consumers", baseline, interventions)(Seq(consumerPopulationChart, consumerDemandChart))
+			@sideBySideChartSection(infotable, "Rent Capture", "rentCapture", baseline, interventions)(Seq(allProfitsPerTonChart, allPercentProfitsAndCostsPerTonStackedChart, allProfitsAndCostsPerTonStackedChart))
+		</div>
+		
+		<script>
+		FISHERY.updateSideBySideChartWidths = function() {
+			var containerWidth = $('#results-sidebyside').width();			
+			
+			if(!isNaN(containerWidth)) {
+				var width = Math.floor(containerWidth / 2) - 5; //fit 2 charts side-by-side
+				if(width < 515){
+					width = 515;
+				}
+			    var scope = angular.element($("#OutputsCtrl")).scope();
+			    scope.$apply(function(){
+				    for(var i=0; i<RESULTS_CONFIG.baseline.length; i++){
+					    var id = RESULTS_CONFIG.baseline[i].id;
+						scope.results.chartData.baseline[id].options.width = width;
+						scope.results.chartData.baseline[id].options.chartArea = {left:100, top: 45, width: (width-100-150)};
+				    }
+				    for(var i=0; i<RESULTS_CONFIG.intervention.length; i++){
+					    var id = RESULTS_CONFIG.intervention[i].id;
+						scope.results.chartData.interventions[id].options.width = width;
+						scope.results.chartData.interventions[id].options.chartArea = {left:100, top: 45, width: (width-100-150)};
+				    }
+			    });
+			}
+		};
+		
+		if(typeof(jQuery) != 'undefined'){
+			$('a[href="#results-sidebyside"]').on('shown.bs.tab', function (e) {
+				FISHERY.updateSideBySideChartWidths();
+			});
+		}
+
+		</script>
+	</div>
+</div>

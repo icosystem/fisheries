@@ -1,0 +1,77 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationRunChartData._
+@import inputs._
+@import charts._
+@import com.icosystem.json._
+
+@disseminationMain("abouttunagrowth", "About Tuna Stock Growth - Fisheries Supply Chain", "aboutthemodel", c, 
+	Map(uiConfig.populationSizeGrowthCoeff.id -> 0)) {
+
+<div class="navigation">
+    <div class="breadcrumbs">
+        <h3 class="breadcrumbs"><a href="@routes.Application.aboutTheModel()">About the Model</a> -></h3> <h3 class="breadcrumbs">Tuna Stock Growth</h3>    </div>
+    <div class="next">
+        <h3 class="next">Previous:</h3> <h3 class="next"><a href="@routes.Application.aboutMindoroTunaFishery()">About The Mindoro Tuna Fishery</a></h3>
+        <h3 class="next">Next:</h3> <h3 class="next"><a href="@routes.Application.aboutFishing()">About Fishing</a></h3>
+    </div>
+</div>
+
+<h2 class="pagetitle">About Tuna Stock Growth</h2>
+
+<p>A <b class="def">fish stock</b> consists of all of the fish of a given type that live in a fishery. 
+Our model studies the yellowfin tuna stock in the Mindoro area of the Philippines, a biomass of roughly 20,000 tonnes of fish.<a class="ref" href="@routes.Application.aboutMindoroTunaFishery">1</a> </p>
+
+<h3>Key Parameters and Observables</h3>
+
+<ul>
+<li><b class="def">Carrying Capacity</b>  The carrying capacity is the maximum tonnage of fish the fishery can sustain.  In the absence of fishing by humans, the biomass of a fishery is always at or near the carrying capacity. 
+<li><b class="def">Biomass</b> The total amount of fish currently living in the fishery waters, measured as a total tonnage of fish rather than a head count.  </h3>
+<li><b class="def">Growth Rate</b> When fishing takes place, fish are removed from the stock. The growth rate is a measure of how quickly the fish population will repopulate when its biomass is below the carrying capacity. Higher growth rates lead to faster growth in the fish population.</li>
+<li><b class="def">Maximum Sustainable Yield (MSY)</b> The theoretical maximum rate of fishing, or number of tonnes caught per year, that can be compensated by the fish's own growth rate. </li>
+</ul>
+
+<p>A fishery is said to be <i>fully exploited</i> when fished at Maximum Sustainable Yield. A fishery is said to be <i>overfished</i> when more fish are removed 
+then are able to repopulate, leading to the <i>collapse</i> of the stock. Today, roughly 90% of worldwide fisheries are either fully exploited or overfished. <a class="ref" href="http://www.fao.org/3/a-i3720e/index.html">2</a></p>
+<p><a href="@routes.Application.optimism">Click here</a> to learn more about the outcomes of a fully exploited fishery</p>
+<p><a href="@routes.Application.pessimism">Click here</a> to learn more about the outcomes of an overfished stock</p>
+
+<h3>Modeling Notes</h3>
+
+<p>We based our model of fish stocks off of the Gordon-Schaefer model.<a class="ref" href="http://www.fao.org/docrep/003/w6914e/w6914e02.htm">3</a> Gordon-Schaefer is a basic approach to modeling fish stock change which does not take into account, for example, changing ecological conditions that might lead to the carrying capacity changing over time, or the ages of the fish being caught and removed from the reproductive cycle.  The goal of this fishery model is to investigate the interactions in the value chain, not the complexities of fish stock changes, and Gordon-Schaefer provides a reasonable model of the fish stock component of the fishery value chain.</p>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Change the slider below to see how it affects fish stocks</h3>
+		@qualitativeSliderWithNumber(uiConfig.ratioOfCatchToGrowthOfCurrentStock.id, uiConfig.ratioOfCatchToGrowthOfCurrentStock.min, uiConfig.ratioOfCatchToGrowthOfCurrentStock.max, uiConfig.ratioOfCatchToGrowthOfCurrentStock.step, uiConfig.ratioOfCatchToGrowthOfCurrentStock.label, uiConfig.ratioOfCatchToGrowthOfCurrentStock.units, uiConfig.ratioOfCatchToGrowthOfCurrentStock.filter, uiConfig.ratioOfCatchToGrowthOfCurrentStock.leftLabel, uiConfig.ratioOfCatchToGrowthOfCurrentStock.rightLabel)
+	</span>
+	
+	<span class="outputs">
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} != 1"> When neither over- not under-fishing, fish stocks stabilize at maximum sustainable yield.</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} >= 1"> When under-fishing, fish stocks grow over time.</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.ratioOfCatchToGrowthOfCurrentStock.id} <= 1"> When over-fishing, fish stocks collapse.</h3>
+			@lineChart(fishStockChart.baselineId, "model.resultsId", "Stock", "Years", "Tons")
+		</span>
+	</span>
+</span>
+
+}

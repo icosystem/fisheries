@@ -1,0 +1,31 @@
+@import "constants.less";
+
+.input-tab-pane {
+	padding: 25px;
+	background-color: @dark-blue;
+}
+.input-tabs>li:first-of-type {
+	margin-left: @indent-l;
+}
+
+.input-tabs>li>a {
+	font-weight: normal;
+	text-transform:uppercase;
+	border: 1px solid @light-blue;
+	background-color: @light-blue;
+	color: @mid-blue;
+	border-radius: 0px;
+}
+
+.input-tabs>li>a:hover {
+	border: 1px solid@mid-blue;
+	background-color: @mid-blue;
+	color: white;
+}
+
+.input-tabs>li.active>a,.input-tabs>li.active>a:hover,.input-tabs>li.active>a:focus {
+	border: 1px solid@dark-blue;
+	background-color: @dark-blue;
+	color: white;
+}
+

@@ -1,0 +1,93 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationComparisonChartData._
+@import charts.lineChart
+@import inputs._
+@import com.icosystem.json._
+
+@disseminationMain("quotasinputcontrolsalone", "Input controls alone - Fisheries Supply Chain", "insights", c, 
+	Map(uiConfig.years.id -> 20, uiConfig.ratioOfStockToK.id -> 0.4, uiConfig.ratioOfCatchToGrowthOfCurrentStock.id -> 1.2, uiConfig.ratioOfInitialPopulationNeverLeaving.id -> 0.9)) {
+
+<h3 class="breadcrumbs"><a href="@routes.Application.index()">Insights</a> -></h3>
+<h3 class="breadcrumbs">Input Controls Pessimistic Scneario</h3>
+
+<h2 class="pagetitle">Input controls in an overfished scenario do not have a significant impact</h2>
+
+<p>Taking a more pessimistic view of current conditions in Mindoro, if we assume that fish stocks are 
+already being overfished, then input controls alone will not have any impact for many decades.</p>
+
+<p>Unlike what we saw in the non-overfished scenarios, the threat to stocks is no longer coming from new fishers attracted by raising profits. 
+Instead, it is driven by the fact that fishers stay longer hours at sea in an effort to compensate for falling catches and the loss of their livelihoods. 
+</p>
+
+<p>Limiting the number of fishing permits does not work in this scenario because no new fishers are interested in joining in. Establishing a quota would be the logical way to reduce fishing and bring stocks back up. 
+However, this has a negative impact on those fishers who are unable to find other sources of income. </p>
+
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Try limiting the number of fishing boats, then the total catch</h3>
+		@quotaInterventionItem(uiConfig.interventionLimitEntries, uiConfig.interventionUseTotalAllowableCatch, uiConfig.interventionTotalAllowableCatch)
+	</span>
+	<span class="outputs">
+
+		<span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2'"> 
+            In the presence of overfishing, fish stocks are collapsing </h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'  || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2'">
+			Establishing fishing permits has no effect. </h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2'"> 
+           Establishing strict quotas may lead to fish stock recovery, but it is a double-edged sword </h3>
+			@lineChart(biomassBaselineVsInterventionComparisonChart.comparisonId, "model.resultsId", "Fish Stock", "Years", "Tons")
+		</span>	 
+		
+		<span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2'"> 
+            Total catch plummets due to diminishing stocks</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'  || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2'"> 
+			Total catch plummets due to diminishing stocks</h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2'"> 
+            Total catch will recover eventually</h3>
+			@lineChart(fisherTotalCatchComparisonChart.comparisonId, "model.resultsId", "Total Catch", "Years", "tons / year")
+		</span>
+		<span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2'"> 
+            Vulnerable fisher incomes are below-subsistence, and falling</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'  || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2'"> 
+			Vulnerable fisher incomes are below-subsistence, and falling</h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2'"> 
+            But fishers lives are made even worse in the short term, and it takes decades to recover</h3>
+			@lineChart(perFisherSurplusBaselineVsInterventionComparisonChart.comparisonId, "model.resultsId", "Per Capita Surplus after Living Costs", "Years", "$ / household / year")
+		</span>
+		<span class="chartcontainer">
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2'"> 
+            Cultural fishers are unable to find alternative sources of income and continue to fish in spite of their losses </h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2'  || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2'"> 
+			Cultural fishers are unable to find alternative sources of income and continue to fish in spite of their losses </h3>
+            <h3 ng-hide="model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2'"> 
+            Cultural fishers are unable to find alternative sources of income and continue to fish in spite of their losses</h3>
+			@lineChart(fisherPopulationComparisonChart.comparisonId, "model.resultsId", "Population", "Years", "# of households")
+		</span>
+	
+	</span>
+</span>
+
+}

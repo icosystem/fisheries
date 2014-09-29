@@ -1,0 +1,62 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationRunChartData._
+@import inputs._
+@import charts._
+@import com.icosystem.json._
+
+@disseminationMain("aboutmiddlemen", "About Middlemen - Fisheries Supply Chain", "aboutthemodel", c) {
+
+<div class="navigation">
+    <div class="breadcrumbs">
+        <h3 class="breadcrumbs"><a href="@routes.Application.aboutTheModel()">About the Model</a> -></h3> <h3 class="breadcrumbs">About Middlemen</h3>
+    </div>
+    <div class="next">
+        <h3 class="next">Previous:</h3> <h3 class="next"><a href="@routes.Application.aboutMarkets()">About Markets</a></h3>
+        <h3 class="next">Next:</h3> <h3 class="next"><a href="@routes.Application.aboutExporters()">About Exporters</a></h3>
+    </div>
+</div>
+
+<h2 class="pagetitle">About Middlemen</h2>
+
+<p>Middlemen, known in the Mindoro region as <i>casas</i>,are responsible for buying the fish as it is brought to shore and bringing it to wholesale markets. </p>
+<p>Fluent in the local culture and language, yet commercially savvy and well connected, middlemen in many regions are able to make huge profits by exploiting their exclusive access to markets. 
+Fishers end up being "price takers", selling the fish at whatever price the middleman will pay. Otherwise the middleman can buy from other fishers, condemning a fisher's catch to spoil.</p>
+ 
+<p>However, middlemen In Mindoro have relatively low profit rates. Possible reasons are that casas have to compete with each other for access to the product and 
+exporters that have access to high quality tuna from multiple regions. Interventions such as bringing new players into the middlemen sector to create competition or offering fair 
+pricing buying alternatives aimed at reducing middlemen profit margins are not relevant here. Instead, interventions aimed at helping fishers could end up benefiting middlemen
+as well. In our model, the option to "remove middlemen" can be used to simulate an alignment of objectives by merging middlemen and municipal fishers into a single unit with
+common interests. Read about <a href="../insights/fair-pricing">establishing a single seller operation</a> for an example. </p>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>The chart below shows the current and expected added value and profit for the three main players in the supply chain: fishers, intermediaries and exporters. The middlemen’s share is the smallest one. Move the slider to see how we expect these profit shares to evolve in the future. </h3>
+		@qualitativeSliderWithNumber(uiConfig.years.id, uiConfig.years.min, uiConfig.years.max, uiConfig.years.step, uiConfig.years.label, uiConfig.years.units, uiConfig.years.filter, uiConfig.years.leftLabel, uiConfig.years.rightLabel)
+	</span>
+	
+	<span class="outputs">
+		<span class="chartcontainer">
+			@lineChart(allProfitsAndCostsPerTonStackedChart.baselineId, "model.resultsId", "Fish Price Breakdown", "Years", "$ / ton caught or bought")
+		</span>
+	</span>
+</span>
+}

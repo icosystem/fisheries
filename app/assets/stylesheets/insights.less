@@ -1,0 +1,88 @@
+@import "constants.less";
+@import "mixins.less";
+
+.insights-the-model-grid {
+	.clearfix;
+}
+.insights-title {
+	display: block;
+	margin-bottom: 1em;
+	width: 270px;
+	max-width: 270px;
+	float: left;
+	margin-right: 15px;
+
+	background-color: @orange;
+	color: white;
+	height: @block-height;
+	display: block;
+	position: relative;
+	
+	h3 {
+		color: white;
+		opacity: 0.95;
+		font-size: 1.5em;
+		text-transform: uppercase;
+		font-weight: normal;
+		position: absolute;
+		left: 10px;
+		bottom: 10px;
+		padding: 0; margin: 0;
+	}
+}
+.insights-title-sub {
+	.insights-title;
+	background-color: @purple;
+}
+
+.insight {
+	display: block;
+	margin-bottom: 1em;
+	width: 270px;
+	max-width: 270px;
+	float: left;
+	margin-right: 15px;
+
+	overflow: hidden;
+	
+	.text {
+		padding: 10px;
+		display: block;
+	}
+		
+	img {
+		.grayscale;
+		max-height: @block-height;
+		display: block;
+	}
+}
+
+@media only screen and (max-width: 1199px) {
+	/* rows of of 3, "Explore Insights" title
+	 * will just remain mushed with others to 
+	 * maximimize are minimal space
+	 */
+	.insights-the-model-grid span:nth-child(3n+4) {
+		clear: left;
+	}
+}
+
+@media only screen and (min-width: 1200px) {
+	/* drop title tile to left
+	 * because it looks nice and we have the room
+	 */
+	.insights-the-model-grid {
+		padding-left: 285px;
+	}
+	.insights-title {
+		margin-left: -285px;
+	}
+	
+	/* we have room for 3 columns of insights per row
+	 * so +5 will skip the 1st row of title+3-insights=4 elements, starting at the 5th element which is the 1st item in the 2nd row
+	 * and then keep rows of 3 insights after that
+	 */
+	.insights-the-model-grid span:nth-child(3n+5) {
+		clear: left;
+	}
+}

@@ -1,0 +1,85 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(scientist: Boolean, uiConfig: UIInputConfigs)
+
+@import tags._
+@import controllers.InputType._
+@import controllers.ModelConfigUI
+
+<form>
+	<div class="input-pane inputs" ng-controller="InputsCtrl" id="InputsCtrl">
+		<ul class="nav nav-tabs input-tabs">
+			<li class="active"><a href="#tab-1" data-toggle="tab">Interventions</a></li>
+			<li><a href="#tab-2" data-toggle="tab">Baseline</a></li>
+			<li><a href="#tab-3" data-toggle="tab">Setup</a></li>
+		</ul>
+		<div class="tab-content input-tab-pane" id="inputs-tab-content">
+			<div class="tab-pane active inputs" id="tab-1">
+				<div class="input-section">	
+					<div class="input-section-header">
+						<h3>Suply Chain Strenghtening</h3>
+					</div>
+					@anInterventionInput(scientist, uiConfig.interventionCostOfLiving)
+	                @anInterventionInput(scientist, uiConfig.interventionCostOfFishingVariable)
+	                @anInterventionInput(scientist, uiConfig.interventionCostOfFishingFixed)
+					@anInterventionInput(scientist, uiConfig.interventionProductivity) 
+					@anInterventionInput(scientist, uiConfig.interventionFishQuality)
+					@anInterventionInput(scientist, uiConfig.interventionSingleSellerOperationKnowledgeAndSupport)
+					@anInterventionInput(scientist, uiConfig.interventionRemoveMiddleman)
+					@anInterventionInput(scientist, uiConfig.interventionCompetitiveness)
+				</div>
+				
+				<div class="input-section">	
+					<div class="input-section-header">
+						<h3>Alternative Livelihoods</h3>
+					</div>
+					@anInterventionInput(scientist, uiConfig.interventionNumberOfPeopleTrained)
+					@anInterventionInput(scientist, uiConfig.interventionAlternativeJobsAvailable)
+					@anInterventionInput(scientist, uiConfig.interventionAlternativeJobWorkload)
+					@anInterventionInput(scientist, uiConfig.interventionFinancialBenefitOfAlternative)
+					@anInterventionInput(scientist, uiConfig.interventionCapitalSupport)
+				</div>
+				
+				<div class="input-section">	
+					<div class="input-section-header">
+						<h3>Quotas</h3>
+					</div>
+					@quotaInterventionItem(scientist, uiConfig.interventionLimitEntries, uiConfig.interventionUseTotalAllowableCatch, uiConfig.interventionTotalAllowableCatch)
+				</div>
+			</div>
+
+			<div class="tab-pane" id="tab-2">
+				@inputSection(scientist, "Fish")(Seq(uiConfig.growthRate, uiConfig.ratioOfStockToK, uiConfig.ratioOfCatchToGrowthOfCurrentStock, uiConfig.initialTotalCatch))
+				@inputSection(scientist, "Municipal Fisher")(Seq(uiConfig.numberOfFishermenInPopulation, uiConfig.ratioOfInitialPopulationNeverLeaving, uiConfig.populationSizeGrowthCoeff, uiConfig.effortPerFishermanPerYear, uiConfig.effortGrowthCoeff, uiConfig.costOfLivingPerFisherman, uiConfig.variableCostPerUnitEffort, uiConfig.fixedCostPerFisherman, uiConfig.nonFishingIncome, uiConfig.spoiledCatchRatio, uiConfig.otherCatchRatio, uiConfig.otherValueRatio, uiConfig.percentOfInitialTotalCatch, uiConfig.priceNegotiationStressThreshold, uiConfig.priceNegotiationMaxAdherence, uiConfig.priceNegotiationTimeToRetry, uiConfig.priceNegotiationTarget))
+				@inputSection(scientist, "Alternative Livelihood", "non-fishing income available to fishermen")(Seq(uiConfig.alternativeEffortPerFishermanPerYear, uiConfig.numberOfPeopleTrained, uiConfig.alternativeJobsAvailable, uiConfig.alternativeJobWorkload, uiConfig.financialBenefitOfAlternative, uiConfig.culturalFishingChoiceBias)) 
+				@inputSection(scientist, "Commercial Fisher")(Seq(uiConfig.growthRateCommercialFisher))
+				@inputSection(scientist, "Middleman Market")(Seq(uiConfig.middlemanMarketFishPrice, uiConfig.middlemanMarketSpeed))
+				@inputSection(scientist, "Middleman")(Seq(uiConfig.middlemanOverhead, uiConfig.middlemanDesiredProfitRate))
+				@inputSection(scientist, "Exporter Market")(Seq(uiConfig.exporterMarketPrice, uiConfig.exporterMarketSpeed))
+				@inputSection(scientist, "Exporter")(Seq(uiConfig.exporterOverhead, uiConfig.exporterDesiredProfitRate))
+				@inputSection(scientist, "Consumer Market")(Seq(uiConfig.consumerMarketPrice, uiConfig.consumerMarketSpeed))
+				@inputSection(scientist, "Consumer")(Seq(uiConfig.consumerGrowthRate))
+			</div>
+			
+			<div class="tab-pane" id="tab-3">
+				@inputSection(scientist, "Setup")(Seq(uiConfig.stepSize, uiConfig.years))
+			</div>
+		</div>
+	</div>
+</form>

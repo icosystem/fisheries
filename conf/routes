@@ -1,0 +1,47 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Remove trailing /'s from paths
+GET         /*path/                                     controllers.Application.untrail(path: String)
+
+# Home page
+GET         /                                           controllers.Application.index
+GET         /insights                                   controllers.Application.insights
+
+# Insights pages
+GET         /insights/optimism                          controllers.Application.optimism
+GET         /insights/pessimism                         controllers.Application.pessimism
+GET         /insights/input-controls                    controllers.Application.inputControls
+GET         /insights/interventions-can-backfire        controllers.Application.interventionsCanBackfire
+GET         /insights/cost-vs-productivity              controllers.Application.costVsProductivity
+GET         /insights/input-cant-restore                controllers.Application.inputCantRestore
+GET         /insights/fair-pricing                      controllers.Application.fairPricing
+GET         /insights/alternative-livelihoods           controllers.Application.alternativeLivelihoods
+
+# About the model
+GET         /about                                      controllers.Application.aboutTheModel
+GET         /about/consumers                            controllers.Application.aboutConsumers
+GET         /about/markets                              controllers.Application.aboutMarkets
+GET         /about/tuna-growth                          controllers.Application.aboutTunaGrowth
+GET         /about/fishing                              controllers.Application.aboutFishing
+GET         /about/agent-based-modeling                 controllers.Application.aboutAgentBasedModeling
+GET         /about/mindoro-tuna-fishery                 controllers.Application.aboutMindoroTunaFishery
+GET         /about/municipal-fishers-op                 controllers.Application.aboutMunicipalFishersOptimistic
+GET         /about/municipal-fishers-pes                controllers.Application.aboutMunicipalFishersPessimistic
+GET         /about/commercial-fishers                   controllers.Application.aboutCommercialFishers
+GET         /about/middlemen                            controllers.Application.aboutMiddlemen
+GET         /about/exporters                            controllers.Application.aboutExporters
+
+# Model pages
+GET         /model                                      controllers.Application.defaultModel(scenario: Option[String])
+GET         /model/custom                               controllers.Application.customModel(config: Option[ModelConfigUI])
+POST        /model/run                                  controllers.Application.runModel
+POST        /model/run2                                 controllers.Application.runModel2
+
+# Result url
+GET         /results/:runid/:dataid                     controllers.Application.data(runid: String, dataid: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                               controllers.Assets.at(path="/public", file)
+GET         /webjars/*file                              controllers.WebJarAssets.at(file)

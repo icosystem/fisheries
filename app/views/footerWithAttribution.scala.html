@@ -1,0 +1,33 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(refs: Seq[images.ImageInformation])
+
+<div id="footer-with-attributions">
+	<span class="image-attributions">
+		@refs.map { ref =>
+			<a href="@ref.source" target="_blank">"@ref.title"</a> by <a href="@ref.authorSite" target="_blank">@ref.author</a> (<a href="@ref.license.link" target="_blank">@ref.license.name</a>)<br>
+		}
+	</span>
+	<span class="icosystem">
+		Powered by <a href="http://www.icosystem.com/"><img src="@routes.Assets.at("images/icosystem_logo.png")" alt="Icosystem"></a>
+	</span>
+	<span class="rockefeller">
+		Funded by a grant from <a href="http://www.rockefellerfoundation.org/">The Rockefeller Foundation <img src="@routes.Assets.at("images/rockefeller_logo_footer.gif")" align="right"/></a>
+	</span>
+</div>

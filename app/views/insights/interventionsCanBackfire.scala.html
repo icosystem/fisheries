@@ -1,0 +1,69 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationComparisonChartData._
+@import model.SimulationRunChartData._
+@import charts.lineChart
+@import inputs._
+@import com.icosystem.json._
+@import play.api.libs.json._
+
+@disseminationMain("interventionscanbackfire", "Interventions can Backfire - Fisheries Supply Chain", "insights", c, 
+	Map(uiConfig.years.id ->15, uiConfig.interventionCostOfLiving.id -> Json.parse("{\"endValue\": 0, \"startYear\": 1, \"endYear\": 4}"))) {
+
+<h3 class="breadcrumbs"><a href="@routes.Application.index()">Insights</a> -></h3>
+<h3 class="breadcrumbs">Helping Fishers</h3>
+
+<h2 class="pagetitle">Interventions can backfire</h2>
+
+
+<p> Interventions aimed at increasing fishers' profit margins (e.g. by providing subsidized fishing gear, facilities, and so on) can 
+result in new fishers joining the fishery from other vulnerable regions. Even though supporting more fishers is a social benefit at the 
+national level, the added effort threatens fish stocks. In the long run, it is very easy for productivity-aimed interventions to disrupt 
+the stock-fishers equilibrium, leading to a stock collapse and thus having an overall negative effect in the end.</p>
+
+<span class="input-section">
+</span>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Change the subsidies provided to municipal fishers to see how the fishing population, and fish stocks, are affected.</h3>
+		 @qualitativeSlider(uiConfig.interventionCostOfLiving.id, uiConfig.interventionCostOfLiving.min, uiConfig.interventionCostOfLiving.max, uiConfig.interventionCostOfLiving.step, uiConfig.interventionCostOfLiving.label, uiConfig.interventionCostOfLiving.leftLabel, uiConfig.interventionCostOfLiving.rightLabel)
+	</span>
+	<span class="outputs">
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionCostOfLiving.id}.endValue != 0">In the absence of a subsidy fishers make a small profit from fishing.</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionCostOfLiving.id}.endValue == 0">With a subsidy, fishing profits rise sharply at first but then collapse due to waning fish stocks.</h3>
+			@lineChart(perFisherSurplusComparisonChart.comparisonId, "model.resultsId", "Per Capita Fishing Profits", "Years", "$ / household / year")
+		</span>
+				<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionCostOfLiving.id}.endValue != 0">The number of people fishing is more or less stable.</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionCostOfLiving.id}.endValue == 0">New people are joining the fishery, attracted by profits.</h3>
+			@lineChart(fisherPopulationComparisonChart.comparisonId, "model.resultsId", "Population", "Years", "# of households")
+		</span>
+		<span class="chartcontainer">
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionCostOfLiving.id}.endValue != 0">And fish stocks are not threatened yet.</h3>
+			<h3 ng-hide="model.inputs.@{uiConfig.interventionCostOfLiving.id}.endValue == 0">Causing fish stocks to drop catastrophically.</h3>
+			@lineChart(biomassComparisonChart.comparisonId, "model.resultsId", "Fish Stock", "Years", "Tons")
+		</span>
+	</span>
+</span>
+
+}

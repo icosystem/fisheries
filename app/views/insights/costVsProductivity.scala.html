@@ -1,0 +1,97 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationComparisonChartData._
+@import charts.lineChart
+@import inputs._
+@import com.icosystem.json._
+
+@disseminationMain("quotasinputcontrolsalone", "Cost vs Productivity - Fisheries Supply Chain", "insights", c, 
+	Map(uiConfig.years.id -> 30)) {
+
+<h3 class="breadcrumbs"><a href="@routes.Application.index()">Insights</a> -></h3>
+<h3 class="breadcrumbs">Input Controls and Interventions</h3>
+
+<h2 class="pagetitle">Input Controls and Interventions</h2>
+
+<p>In the presence  of input controls, some interventions regain a positive outcome.</p>
+
+<p><i>Input controls</i> refer to various regulatory mechanisms to reduce or limit the amount of fishing. Input controls are sometimes implemented by issuing a limited number of fishing permits, so as to limit the 
+number and type of boats allowed to take the fish. Other common types of input controls are <i>quotas</i>, where the total tonnage of fish that can be taken from the ocean is limited.</p>
+
+<p>Quotas may be a simple way to promote fish stock recovery, but by limiting fishers' ability to fish, they also have a direct, negative impact on their livelihoods. </p> 
+Combining input control quotas with other fisher community support strategies
+ can produce better outcomes than just quotas alone.  For example, implementing 
+ a strategy to help fishers improve the quality of their tuna catch, in addition 
+ to implementing access control quotas, improves fisher, middleman, and exporter 
+ profits, while sustaining fish stocks.</p>
+
+<p>In the interactive section below, we show an intervention that increases fishers' incomes without requiring them to take more fish from the ocean. (Such as helping increase the quality of fish brought to shore.)
+Increasing productivity, as in making boats faster or baits more efficient, would allow fishers to take more fish from the ocean, meaning more stock depletion. In contrast, increasing fish quality, as in providing ice or refrigeration to maintain freshness, can raise family income without taking more fish out of the water.  
+</p>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Add input controls, and combine them with subsidies to increase fish quality, to see the effect this has on the fishers and the fishery.</h3>
+		@quotaInterventionItem(uiConfig.interventionLimitEntries, uiConfig.interventionUseTotalAllowableCatch, uiConfig.interventionTotalAllowableCatch)
+		@qualitativeSlider(uiConfig.interventionFishQuality.id, uiConfig.interventionFishQuality.min, uiConfig.interventionFishQuality.max, uiConfig.interventionFishQuality.step, "Capital to Increase Quality of Fish", leftLabel = "Current", rightLabel = "Best")
+	</span>
+	
+	<span class="outputs">
+		<span class="chartcontainer">
+			<h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue != 0"> 
+			Increasing profitability due to global demand for food products is bringing in more fishers and threatening the fish stock </h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2' && model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue != 0"> 
+            Controlling the number of fishing permits forces the number of boats to remain stable </h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue == 0"> 
+            Increasing fish quality leads to immediate livelihood improvements but attracts too many additional fishing boats </h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2' && model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue == 0"> 
+             Controlling the number of fishing permits forces the number of boats to remain stable </h3>
+            
+				@lineChart(fisherPopulationComparisonChart.comparisonId, "model.resultsId", "Population", "Years", "# of households")
+		</span>
+		<span class="chartcontainer">
+			<h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue != 0"> 
+			In the current conditions, stocks slowly decline due to open access </h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2' && model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue != 0"> 
+            Stocks remain stable when not overfished </h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue == 0"> 
+            More boats lead to faster stock decline </h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2' && model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue == 0"> 
+           Stocks remain stable when not overfished </h3>
+            
+			@lineChart(biomassBaselineVsInterventionComparisonChart.comparisonId, "model.resultsId", "Fish Stock", "Years", "Tons")
+		</span>
+		<span class="chartcontainer">
+			<h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue != 0"> 
+			Fisher profits' rise is eventually negated by declining stocks</h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2' && model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue != 0"> 
+            Fisher incomes are now driven up by increasing global demand for wild tuna </h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.maxEntry._2' || model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.limited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue == 0"> 
+            Without input controls, increasing fish quality backfired </h3>
+            <h3 ng-hide="(model.inputs.@{uiConfig.interventionLimitEntries.id} == '@LimitEntriesValues.none._2' && model.inputs.@{uiConfig.interventionUseTotalAllowableCatch.id} == '@UseTotalAllowableCatchValues.unlimited._2') || model.inputs.@{uiConfig.interventionFishQuality.id}.endValue == 0"> 
+           With entry limits, the intervention is able to directly improve fishers incomes without speeding up stock decline </h3>
+            
+			@lineChart(perFisherSurplusBaselineVsInterventionComparisonChart.comparisonId, "model.resultsId", "Per Capita Surplus after Living Costs", "Years", "$ / household / year")
+		</span>
+	</span>
+</span>
+
+}

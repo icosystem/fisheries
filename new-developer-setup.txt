@@ -1,0 +1,84 @@
+These are the instructions for new developers to get set up on the Fisheries project.  If you find something missing or incorrect, feel free to add to/modify it.
+
+
+*****Install Play
+
+	- got to playframework.com
+	- download play v 2.2.1 zip
+	- unzip it wherever you install development tools
+	- add play to your path
+	- at the command line, run 'play' from any directory (actually, use one without actual play sources in it) and make sure it says you've got play 2.2.1
+	
+	Eclipsify the project
+	
+	Note: because different people put their play installs in different places, we do .gitignore the .project and .classpath files, so everyone needs to eclipsify the project for themselves
+	- from the terminal
+	- navigate to your project directory
+	- run 
+		> 'play' (takes a little while)
+	- from the play app command line, run
+		- 'eclipse with-source=true' (takes even longer)
+	- import the project into eclipse
+
+
+*****Install the Scala IDE into Eclipse using Eclipse's Install New Software feature
+	- grab the download link from the scala-ide.org website (http://scala-ide.org/download/current.html)
+		- as of 2013-11-18, the download link for the current version is http://download.scala-ide.org/sdk/e38/scala210/stable/site
+		- as of 2013-11-18, the InSynth plugins that are part of this bundle do not work; unselect them
+
+
+*****Configure Eclipse for Scala
+	- If you haven't done so already, follow the instructions at http://scala-ide.org/docs/current-user-doc/advancedsetup/index.html
+	- Additionaly configure Eclipse to use unicode for file editors (http://scala-ide.org/docs/user/faq.html)
+	  set Eclipse default encoding to UTF-8 in General -> Workspace in the preferences
+
+
+*****Setup a personal logging file
+	- Create a new file called yourname-logger.xml and place it in the root of this project (same directory as this file)
+	  this is your custom logging file, use 'conf/application-logger.xml' as an example of what should go into this file
+
+
+*****To run the app
+	- From your project directory
+		> play
+	- Once play has loaded
+		> run -Dlogger.file=yourname-logger.xml
+	- direct your browser at
+		- http://localhost:9000/
+
+
+*****To Debug Fisheries while it's running on the Play server
+	- instead of running play normally, launch play in debug mode
+		> 'play debug'
+	- Once play has loaded
+		> 'run'
+	- in Eclipe, create a debug run configuration to connect to the play server
+		- open the Debug menu
+		- selected 'Debug Configurations...'
+		- Double-click 'Remote Java Application'
+		- change the port to 9999
+		- give it a name, if you want
+	- run your new debug configuration
+	- set a break point in the scala code
+	- hit the app from your browser
+
+
+*****Accessing Heroku
+	- Heroku makes it super simple to deploy Play apps
+	- If you haven't set yourself up with a Heroku account
+	- Follow Heroku's 'Getting Started' instructions at https://devcenter.heroku.com/
+
+
+*****Deploying to Heroku, detailed
+
+	- Once you've set up a Heroku account and configured an app to use to host the Fishery model, deploying is just a matter of using git to push to your heroku app. The general syntax of this command is 
+		> git push <repo> <local-commit>:<remote-branch>
+		
+		where <repo> is the name of the repository you want to push to, <local-commit> is the local branch name, tag, or SHA-1 hash for a commit you have
+		on your machine, and <remote-branch> is the name of the branch on the remote repository you want to push the commit to.
+		If <local-commit> and <remote-branch> are the same, you can omit the :<remote-branch> portion
+		> git push <repo> <local-commit>
+		
+		NOTE: Unlike a normal git repository, Heroku does not contain a complete copy of the repo.  Heroku only every
+		cares about what's been pushed to 'master' by convention.
+		

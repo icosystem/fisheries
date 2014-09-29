@@ -1,0 +1,129 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import controllers.initial._
+@import controllers.ModelConfigUI
+@import controllers.Application
+@import model.ResultTables
+@import play.api.libs.json._
+@import tags._
+@import controllers.initial.UIInputConfigDefaults._
+@import model.SimulationOverviewData
+
+<!DOCTYPE html>
+
+<html class="model">
+    <head>
+        <meta charset="utf-8">
+        <title>Model - Fisheries Supply Chain</title>
+        <link rel="stylesheet" href="@routes.Assets.at("css/redmond/jquery-ui-1.7.1.custom.css")" >
+        <link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")" >
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        
+        <script src="@routes.Assets.at("javascripts/underscore/underscore-min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/jquery-ui-1.9.2.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/selectToUISlider.jQuery.js")"></script>
+        <script src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")" ></script>
+        <script src="@routes.WebJarAssets.at(WebJarAssets.locate("angular.min.js"))"></script>
+        
+        <link href="http://fonts.googleapis.com/css?family=Exo+2:400,300,400italic,700" rel="stylesheet" type="text/css">
+        <!-- use Font-Awesome icon font for overview visualization -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        
+        <script src="@routes.Assets.at("javascripts/util.js")"></script>
+		<script src="@routes.Assets.at("javascripts/charts.js")"></script>
+		<script src="@routes.Assets.at("javascripts/ng-google-chart.js")"></script>
+		<script src="@routes.Assets.at("javascripts/filters.js")"></script>
+		<script src="@routes.Assets.at("javascripts/app.js")"></script>
+		<script src="@routes.Assets.at("javascripts/services.js")"></script>
+		<script src="@routes.Assets.at("javascripts/controllers.js")"></script>
+		<script src="@routes.Assets.at("javascripts/range.js")"></script>
+        
+    </head>
+    <body>
+
+<script>
+	//https://github.com/pyrsmk/W
+	!function(a,b){"undefined"!=typeof module&&module.exports?module.exports=b():"function"==typeof define&&define.amd?define(b):a.W=b()}(this,function(){var a,b,c=window,d=document,e=d.documentElement,f=[],g=function(a){return function(){e.clientWidth&&a()}};return function(h){var i,j,k,l=typeof h;return"function"==l?((j=c.addEventListener)?j("resize",g(h),!1):c.attachEvent("onresize",g(h)),f.length||(a=d.createElement("b"),a.style.position="absolute",a.style.top="-99em",a.innerHTML="W",e.appendChild(a),b=a.offsetHeight,setInterval(function(c,d){if(b!=(d=a.offsetHeight))for(c=f.length;c;)g(f[--c])();b=d},250)),void f.push(h)):(j=d.createElement("div"),j.style.width="1em",e.appendChild(j),i=j.offsetWidth,i=i?i:16,e.removeChild(j),"number"==l?h/i:(j=navigator.userAgent.match(/iPhone|iPod|iPad/i)?c.outerWidth:screen.width,(k=c.innerWidth)||(k=e.clientWidth),j=5>100*(k-j)/k?k:j,h?j/i:j))}});
+
+	if(!FISHERY) {
+		var FISHERY = {};
+	}
+	FISHERY.scientist = @c.scientist;
+	
+	// http://stackoverflow.com/questions/4209420/play-framework-best-practice-to-use-urls-in-separate-javascript-files
+	var MODEL_CONFIG = @Html(Json.toJson(c).toString);
+	var RESULTS_CONFIG = @Html(Json.toJson(ResultTables.resultTables).toString);
+	FISHERY.OVERVIEW_IDS = @Html(Json.toJson(SimulationOverviewData.ids).toString);
+</script>
+
+@header("usethemodel")
+
+<span class="scenario-list">
+    <div class="scenario-link @if(uiConfig.i.uiInputConfig == Mindoro.uiInputConfig){scenario-link-active}">
+        <a href="@routes.Application.defaultModel(Some(mindoroString))"> @if(uiConfig.i.uiInputConfig == Mindoro.uiInputConfig){<span class="glyphicon glyphicon-asterisk"></span>} Case Study: Mindoro Fishery, Optimistic Scenario </a>
+    </div>
+    <div class="scenario-link @if(uiConfig.i.uiInputConfig == PessimisticMindoro.uiInputConfig){scenario-link-active}">
+        <a href="@routes.Application.defaultModel(Some(pessimisticMindoroString))"> @if(uiConfig.i.uiInputConfig == PessimisticMindoro.uiInputConfig){<span class="glyphicon glyphicon-asterisk"></span>} Case Study: Mindoro Fishery, Pessimistic Scenario </a>
+    </div>
+</span>
+
+<div id="main-content" ng-app="simulation">
+	@simulationInputs(c.scientist, uiConfig)
+	@outputs(c.infotable)
+</div>
+
+@footer()
+
+<script>
+// styling done via http://getbootstrap.com/customize, setting tooltip-color to black
+// tooltip-bg and tooltip-arrow-color to the current value of light-blue
+$('.helptext-input').tooltip();
+
+// update height of inputs and outputs panels to stretch to the bottom of the browser window
+var updateColumnHeights = function() {
+	console.log('updating...');
+	var windowHeight = $(window).height()
+	var $inputs = $('#inputs-tab-content');
+	var $outputs = $('#results-comparison-tab-content');
+	var newInputsHeight = windowHeight - $inputs.offset().top - 60; //subtract footer (see main.less)
+	var newOutputsHeight = windowHeight - $outputs.offset().top - 60; //subtract footer (see main.less)
+	if(newInputsHeight > 200 && newOutputsHeight > 200){
+		$inputs.height(newInputsHeight);
+		$inputs.css('max-height', newInputsHeight);
+		$outputs.height(newOutputsHeight);
+		$outputs.css('max-height', newOutputsHeight);
+	}
+}
+W(function(){
+	updateColumnHeights();
+	if(FISHERY.updateSideBySideChartWidths){
+		FISHERY.updateSideBySideChartWidths();
+	}
+});
+$(window).load(updateColumnHeights);
+
+</script>
+
+    </body>
+</html>
+

@@ -1,0 +1,73 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationRunChartData._
+@import inputs._
+@import charts._
+
+@disseminationMain("aboutconsumers", "About Consumers - Fisheries Supply Chain", "aboutthemodel", c) {
+
+<div class="navigation">
+    <div class="breadcrumbs">
+        <h3 class="breadcrumbs"><a href="@routes.Application.aboutTheModel()">About the Model</a> -></h3> <h3 class="breadcrumbs">About Consumers</h3>
+    </div>
+    <div class="next">
+        <h3 class="next">Previous:</h3> <h3 class="next"><a href="@routes.Application.aboutExporters()">About Exporters</a></h3>
+    </div>
+</div>
+
+<h2 class="pagetitle">About Consumers</h2>
+
+<p>Consumers sit at the top of the supply chain, driving demand.  In our model, consumer demand for fish products is constantly growing, 
+as the world population increases and economic growth allows more consumers worldwide to purchase pricier foods. Growing consumer demand drives prices of wild 
+fish up because, with fish stocks fully to over-exploited, production can not grow to match it.   </p>
+
+<p>Consumer demand is price sensitive. Consumers will purchase more if prices are low, and will substitute other protein sources, buying less, when prices are high. 
+This means that scarcity of high quality yellowfin tuna from Mindoro would drive its price up, but not enough to compensate for the income loss for fishers, exporters, and intermediaries.</p>
+
+<p>Over the course of the simulation, the population of consumers grows at a constant rate, essentially the world growth rate for demand of fish products. 
+The consumption of each individual depends on the consumer price of Mindoro tuna: at higher price they will buy less; at a lower price, they will buy more. </p> 
+
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Change the consumer growth rate to see how it affects consumer population</h3>
+		@quantitativeSlider(uiConfig.consumerGrowthRate.id, 0.01, uiConfig.consumerGrowthRate.max, uiConfig.consumerGrowthRate.step, uiConfig.consumerGrowthRate.label, uiConfig.consumerGrowthRate.units, uiConfig.consumerGrowthRate.filter, uiConfig.consumerGrowthRate.helpText)
+	</span>
+	
+	<span class="outputs">
+		<span class="chartcontainer">
+			<h3>Consumer population increases over time</h3>
+			@lineChart(consumerPopulationChart.interventionId, "model.resultsId", "Population", "Years", "Consumers")
+		</span>
+        <span class="chartcontainer">
+            <h3>Higher demand drives prices up</h3>
+            @lineChart(consumerMarketPriceChart.interventionId, "model.resultsId", "Price", "Years", "$ / ton traded")
+        </span>
+        <span class="chartcontainer">
+            <h3>Raising prices reduce per-capita consumption</h3>
+            @lineChart(consumerConsumptionChart.interventionId, "model.resultsId", "Consumption", "Years", "Tons / year")
+        </span>
+
+    </span>
+</span>
+
+}
+

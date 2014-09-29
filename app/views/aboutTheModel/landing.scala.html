@@ -1,0 +1,98 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@import tags.imageAndAttribution
+
+@main("aboutthemodel", "About The Model - Fisheries Supply Chain") {
+
+@header("aboutthemodel")
+
+<div id="content">
+	<h2 class="pagetitle">About the Model</h2>
+	<p>Select a topic to learn more.</p>
+	
+	<div class="about-the-model-grid">
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutAgentBasedModeling()">
+                @imageAndAttribution(images.standOut)
+				<span class="text orange">About the Modeling Initiative</span>
+			</a>
+		</span>
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutMindoroTunaFishery()">
+                @imageAndAttribution(images.boatAndSunset)
+				<span class="text green">The Mindoro Tuna Fishery</span>
+			</a>
+		</span>
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutTunaGrowth()">
+				@imageAndAttribution(images.sardines)
+				<span class="text blue">About Tuna Stock Growth</span>
+			</a>
+		</span>
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutFishing()">
+                @imageAndAttribution(images.boatFishersAndTuna)
+                <span class="text purple">About Fishing</span>
+			</a>
+		</span>
+        <span class="aboutitem">
+            <a href="@routes.Application.aboutMunicipalFishersOptimistic()">
+                @imageAndAttribution(images.floatingFishMarket)
+                <span class="text green">About Municipal Fishers</span>
+            </a>
+        </span>
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutCommercialFishers()">
+				@imageAndAttribution(images.fisherBoat)
+				<span class="text purple">About Commercial Fishers</span>
+			</a>
+		</span>
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutMarkets()">
+                @imageAndAttribution(images.wetMarket)
+				<span class="text orange">About Markets</span>
+			</a>
+		</span>
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutMiddlemen()">
+				@imageAndAttribution(images.fish)
+				<span class="text blue">About Middlemen</span>
+			</a>
+		</span>
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutExporters()">
+                @imageAndAttribution(images.tunaCannery)
+				<span class="text orange">About Exporters</span>
+			</a>
+		</span>
+		<span class="aboutitem">
+			<a href="@routes.Application.aboutConsumers()">
+				@imageAndAttribution(images.sushi)
+				<span class="text green">About Consumers</span>
+			</a>
+		</span>
+		<span class="aboutitem">
+		</span>
+		<span class="aboutitem">
+		</span>
+	</div>	
+</div>
+
+@footerWithAttribution(Seq(images.standOut, images.boatAndSunset, images.sardines, images.boatFishersAndTuna, images.floatingFishMarket, images.fisherBoat, images.wetMarket, images.fish, images.tunaCannery, images.sushi))
+}

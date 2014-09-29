@@ -1,0 +1,76 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@import tags.imageAndAttribution
+
+@main("home insights", "Fisheries Supply Chain") {
+
+@header("insights")
+
+<div id="content">
+	<a href="">
+		<img class="valuechain" src="@routes.Assets.at("images/rockefeller_valuechain-diagram-2.jpg")">
+	</a>
+	
+	<h2 class="visuallyhidden">Summary</h2>
+	<p>In 2014 <a href="http://www.icosystem.com">Icosystem</a>, funded by a grant from <a href="http://www.rockefellerfoundation.org">The Rockefeller Foundation</a>, created a software model of the Mindoro Philippines tuna fishery value chain 
+	from fish stock to consumer. Currently the Mindoro tuna fishery is being fished sustainably<a class="ref" href="@routes.Application.aboutMindoroTunaFishery()">1</a>.
+    This is expected to change as increasing global demand leads to increased profits, inducing overfishing<a class="ref" href="">2</a>. This model was used to improve our understanding of the impact that potential interventions could have on the sustainability of fish stocks and livelihoods of traditional tuna fishers. <a href="@routes.Application.aboutTheModel()">read more</a></p>
+
+	<div class="insights-the-model-grid">
+		<span class="insights-title"><h3>Explore the Insights</h3></span>
+		  			
+		<span class="insight"><a href="@routes.Application.optimism()">
+            @imageAndAttribution(images.sardines)
+			<span class="text">Without external disruptions, the Mindoro fishery is sustainable in the near term.</span>
+		</a></span>
+		<span class="insight"><a href="@routes.Application.pessimism()">
+            @imageAndAttribution(images.deadFish)
+			<span class="text">The Mindoro fishery may collapse if conditions are even a little worse than believed.</span>
+		</a></span>
+		<span class="insight"><a href="@routes.Application.inputControls()">
+            @imageAndAttribution(images.floatingFishMarket)
+			<span class="text">Input Controls can keep the stock sustainable and improve fisher livelihoods.</span>
+		</a></span>
+		<span class="insight"><a href="@routes.Application.interventionsCanBackfire()">
+            @imageAndAttribution(images.putridFishing)
+			<span class="text">Interventions can backfire.</span>
+		</a></span>
+		<span class="insight"><a href="@routes.Application.costVsProductivity()">
+            @imageAndAttribution(images.walkingFishers)
+            <span class="text">In the presence  of Input Controls, some interventions regain a positive outcome.</span>
+		</a></span>
+		<span class="insight"><a href="@routes.Application.inputCantRestore()">
+            @imageAndAttribution(images.fish3)
+			<span class="text">Input Controls, by themselves, are not sufficient to preserve stocks in an overfished scenario.</span>
+		</a></span>
+		<span class="insight"><a href="@routes.Application.fairPricing()">
+            @imageAndAttribution(images.wetMarket)
+            <span class="text">Fair price initiatives may help bring about more equitable trade – but only if very carefully supervised</span>
+		</a></span>
+		<span class="insight"><a href="@routes.Application.alternativeLivelihoods()">
+            @imageAndAttribution(images.paddyField)
+			<span class="text">When overfishing is present, alternative livelihoods are the most promising type of intervention</span>
+		</a></span>
+
+ 	</div>
+</div>
+
+@footerWithAttribution(Seq(images.sardines, images.deadFish, images.floatingFishMarket, images.putridFishing, images.walkingFishers, images.fish3, images.wetMarket, images.paddyField))
+
+}

@@ -1,0 +1,31 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(id: String, min: Double, max: Double, step: Double, label: String, leftLabel: String, rightLabel: String, helpText: Option[String] = None)
+
+<div class="input-item">
+	<label class="control-label" for="@id">
+		@label
+		@for(text <- helpText){@tags.helpWidget(text)}
+	</label>
+
+    <div class="slider-with-min-max-labels">
+        <div class="left-slider-label">@leftLabel</div><div class="right-slider-label">@rightLabel</div>
+        <input type="range" ng-model="model.inputs.@{id}.endValue" id="@id" min="@min" max="@max" step="@step">
+    </div>
+</div>

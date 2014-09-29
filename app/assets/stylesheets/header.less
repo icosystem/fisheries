@@ -1,0 +1,71 @@
+@import "constants.less";
+@import "mixins.less";
+
+#header {
+	position: relative;
+	padding: 10px @container-margin-lr;
+	display: block;
+	background-color: white;
+	border-bottom: 10px solid #D6EAF5; 
+	
+	.page_logo {
+		max-height: 75px;
+		margin-right: 2em;
+		padding-right: 2em;
+		border-right: 2px solid @extra-light-blue;
+	}	
+
+	h1 {
+		font-size: 1em;
+		font-weight: bold;
+		display: inline-block;
+		padding-top: -15px;
+	}
+	a h1, a:link h1 {
+		color: #333;
+		text-decoration: none;
+	}
+	a:active,a:hover {
+		text-decoration: none;
+	}
+	a:active h1,a:hover h1 {
+		text-decoration: underline;
+		color: @mid-blue;
+	}
+	
+	nav {
+		position: absolute;
+		right: 100px;
+		top: 40px; 
+	}
+	nav ul {
+		display: inline-block;
+		.clearfix;
+		margin: 0;
+		padding: 0;
+	}
+	nav li {
+		display: inline-block;
+		font-weight: bold;
+		a {
+			padding: 6px 8px;
+			display: table-cell;
+			vertical-align: middle;
+			font-size: 0.8em;
+			text-transform:uppercase;
+			
+			border-radius: 15px;
+			
+			/* always do font-smoothing for light text on dark background - http://www.lighterra.com/articles/macosxtextaabug/ */
+			-webkit-font-smoothing: antialiased;
+    			-moz-font-smoothing: antialiased;
+    			-o-font-smoothing: antialiased;
+		}
+		text-align: center;	
+		.selected {
+			background-color: @mid-blue;
+			color: white;
+		}
+	}
+}
+

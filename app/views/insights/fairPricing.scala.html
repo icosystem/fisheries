@@ -1,0 +1,73 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@import model.SimulationComparisonChartData._
+@import charts.lineChart
+@import inputs._
+@import com.icosystem.json._
+@import controllers.RemoveMiddlemanUI._
+
+@disseminationMain("quotasinputcontrolsalone", "Fair Pricing Initiatives - Fisheries Supply Chain", "insights", c, 
+	Map(uiConfig.years.id -> 9,
+        uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id + ".endYear" -> 3)) {
+
+<h3 class="breadcrumbs"><a href="@routes.Application.index()">Insights</a> -></h3>
+<h3 class="breadcrumbs">Fair Pricing Initiatives</h3>
+
+<h2 class="pagetitle">Fair price initiatives may help bring about more equitable trade – but only if very carefully supervised</h2>
+
+<p>Fishers can negotiate better prices by not fishing when the price is too low. This requires a high degree of organization and coordination in order to obtain a benefit, and the community must bear the stress of a reduced income.  If the community cannot bear the stress of reduced income for long enough, their negotiation tactic will fail and they will have to accept the buyers' price.</p>
+
+<p>In our model of the Mindoro tuna fishery, reducing fishing leads to economic stress and the resulting price increase is insufficient compensation.  One reason for this failure is that 
+middlemen's profits margins are already low. When fishers demand higher prices, middlemen become unprofitable and lose any incentive to trade. Fishers are left without access to export markets.</p>
+
+<p>Price negotiation is much more likely to succeed if fishers and middlemen cooperate.  Stocks improve and a fairer rent capture distribution is obtained.  As with other scenarios, increasing numbers of fishers may absorb any positive results.</p>
+
+<span class="column-container">
+	<span class="inputs">
+		<h3>Establish a single seller operation, and remove the middleman, to see how the fishery responds.</h3>
+		@qualitativeSlider(uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id, uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.min, uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.max, uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.step, uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.label, uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.leftLabel, uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.rightLabel)
+		@radioItem(uiConfig.interventionRemoveMiddleman.id, Map("Current Middleman Behavior"-> RemoveMiddlemanUI.CURRENT_BEHAVIOR.toString, "Remove Middleman"-> RemoveMiddlemanUI.REMOVE_MIDDLEMAN.toString), ngHide=Some("model.inputs." + uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id + ".endValue == 0"))
+	</span>
+	<span class="outputs">
+		<span class="chartcontainer">
+            <h3 ng-show="model.inputs.@{uiConfig.interventionRemoveMiddleman.id} == '@RemoveMiddlemanUI.CURRENT_BEHAVIOR.toString' && model.inputs.@{uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id}.endValue == 0"> 
+            Currently, fishers receive a small proportion of the value of their catch. The largest benefits stay with exporters. </h3>
+            <h3 ng-show="model.inputs.@{uiConfig.interventionRemoveMiddleman.id} == '@RemoveMiddlemanUI.CURRENT_BEHAVIOR.toString' && model.inputs.@{uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id}.endValue != 0"> 
+            Establishing an aggressive price negotiation policy makes a small dent in exporters profits </h3>
+            <h3 ng-show="model.inputs.@{uiConfig.interventionRemoveMiddleman.id} == '@RemoveMiddlemanUI.REMOVE_MIDDLEMAN.toString' && model.inputs.@{uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id}.endValue != 0"> 
+            If middlemen are allies in the strategy, a fairer rent capture distribution can be achieved </h3>
+			@lineChart(allTotalProfitsComparisonChart.comparisonId, "model.resultsId", "Rent Capture", "Years", "$")
+		</span>
+		<span class="chartcontainer">
+            <h3 ng-show="model.inputs.@{uiConfig.interventionRemoveMiddleman.id} == '@RemoveMiddlemanUI.CURRENT_BEHAVIOR.toString' && model.inputs.@{uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id}.endValue == 0"> 
+            Subsistence fishers make ends meet, but little else</h3>
+            <h3 ng-show="model.inputs.@{uiConfig.interventionRemoveMiddleman.id} == '@RemoveMiddlemanUI.CURRENT_BEHAVIOR.toString' && model.inputs.@{uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id}.endValue != 0"> 
+            But the cost would be to live below subsistence for several years</h3>
+            <h3 ng-show="model.inputs.@{uiConfig.interventionRemoveMiddleman.id} == '@RemoveMiddlemanUI.REMOVE_MIDDLEMAN.toString' && model.inputs.@{uiConfig.interventionSingleSellerOperationKnowledgeAndSupport.id}.endValue != 0"> 
+            Fishers livelihoods are not threatened</h3>
+			@lineChart(perFisherSurplusComparisonChart.comparisonId, "model.resultsId", "Per Capita Surplus after Living Costs", "Years", "$ / household / year")
+		</span>
+	
+			
+	</span>
+</span>
+
+}

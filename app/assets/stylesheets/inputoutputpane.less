@@ -1,0 +1,78 @@
+@import "constants.less";
+@import "mixins.less";
+
+@import (multiple) "slider.less";
+@import (multiple) "inputs.less";
+
+/* http://www.vanseodesign.com/css/equal-height-columns/
+   assume chart column is always taller
+*/
+.column-container {
+	.clearfix;
+	display: block;
+	background-color: @dark-blue;
+	margin-bottom: 2em;
+
+	/* use negative margins equal in size to the those 
+	   specified by #content, to pull input/outputs panel
+	   flush to edge of main column */	
+	margin-left: -@container-margin-lr;
+	margin-right: -@container-margin-lr;
+}
+
+.inputs {
+	.clearfix;
+	.input-section;
+	.inputs-section-setup;
+
+	margin: 0;
+	padding: 1em @container-margin-lr;  
+	float: left;
+	width: 25%;
+	color: @light-blue;
+	font-weight: normal;
+	font-size: 12px;
+
+	h3 {
+		color: white;
+		font-weight: bold;
+		font-size: 14px;
+		margin-bottom: 2em;
+		
+		/* always do font-smoothing for light text on dark background - http://www.lighterra.com/articles/macosxtextaabug/ */
+		-webkit-font-smoothing: antialiased;
+    		-moz-font-smoothing: antialiased;
+    		-o-font-smoothing: antialiased;
+	}
+}
+.outputs {
+	.clearfix;
+	float: left;
+	width: 75%;
+	padding: 0; margin: 0;
+	background-color: white;
+	border-top: 2px solid @extra-light-blue;
+	border-bottom: 2px solid @extra-light-blue;
+	
+	h3 {
+		display: block;
+		margin: 10px 40px 0px 40px; /* assumes a chart size of 515px */
+		width: 400px;
+		padding: 5px 20px;
+		color: darken(@mid-blue, 10%);
+		background-color: @extra-light-blue;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.empty {
+		background-color: white;
+	}
+	.chartcontainer {
+		display: inline-block;
+		width: 515px;
+	}
+	.chart {
+		display: block;
+		width: 515px;
+	}
+}

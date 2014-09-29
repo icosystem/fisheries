@@ -1,0 +1,44 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(c: controllers.ModelConfigUI, uiConfig: UIInputConfigs)
+
+@disseminationMain("aboutagentbasedmodeling", "About the Modeling Initiative", "aboutthemodel", c) {
+
+<div class="navigation">
+    <div class="breadcrumbs">
+        <h3 class="breadcrumbs"><a href="@routes.Application.aboutTheModel()">About the Model</a> -></h3> <h3 class="breadcrumbs">About the Modeling Initiative</h3> <br>
+    </div>
+    <div class="next">
+        <h3 class="next">Next:</h3> <h3 class="next"><a href="@routes.Application.aboutMindoroTunaFishery()">About The Mindoro Tuna Fishery</a></h3>
+    </div>
+</div>
+
+<h2 class="pagetitle">About the Modeling Initiative</h2>
+
+<p>Funded by a grant from Rockefeller Foundation, Icosystem built a software program to model the economic environment of a fisheries supply chain. </p>
+
+<p>Icosystem used Agent-Based Simulation techniques to model the Mindoro yellowfin tuna fishery in the Philippines. 
+An Agent-Based Simulation models entities such as individuals, communities, and markets as mathematical formulas that emulate the real world 
+decision-making logic of the entities being modeled.</p>
+
+<p>The main focus of the model is the supply chain relationships between fishers, middlemen, exporters, and the markets between them. We focused on understanding the consequences of possible interventions
+on municipal fishers. We were not concerned with capturing the behavior of fish stocks, nor of consumers, in great detail. Instead, we tried to model each agent in sufficient detail to
+capture the dynamics of the supply chain system as a whole, and how they impact municipal fishers' daily lives.</p> 
+
+}

@@ -1,0 +1,37 @@
+Typesafe Licenses - https://typesafe.com/legal/licenses
+
+Simple Build Tool (sbt) -  BSD License (http://opensource.org/licenses/bsd-license.php)
+Akka and Play Framework  - Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+Scala and the Scala IDE for Eclipse - Scala License (http://www.scala-lang.org/node/146?_ga=1.122931019.1305266478.1405715689)
+
+Google
+
+angularjs - MIT License (https://github.com/angular/angular.js/blob/master/LICENSE)
+guava - Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+findbugs - GNU Lesser GPL (http://www.gnu.org/licenses/lgpl.html)
+
+
+"In place" JS libraries
+
+===================
+jQuery throttle / debounce - v1.1 - 3/7/2010
+http://benalman.com/projects/jquery-throttle-debounce-plugin/
+
+Copyright (c) 2010 "Cowboy" Ben Alman
+Dual licensed under the MIT and GPL licenses.
+http://benalman.com/about/license/
+===================
+
+
+===================
+jQuery-Plugin - selectToUISlider - creates a UI slider component from a select element(s)
+by Scott Jehl, scott@filamentgroup.com
+http://www.filamentgroup.com
+reference article: http://www.filamentgroup.com/lab/update_jquery_ui_16_slider_from_a_select_element/
+demo page: http://www.filamentgroup.com/examples/slider_v2/index.html
+
+Copyright (c) 2008 Filament Group, Inc
+Dual licensed under the MIT (filamentgroup.com/examples/mit-license.txt) and GPL (filamentgroup.com/examples/gpl-license.txt) licenses.
+
+Usage Notes: please refer to our article above for documentation
+===================

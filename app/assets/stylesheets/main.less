@@ -1,0 +1,71 @@
+@import "header.less";
+@import "footer.less";
+
+html.home { @import (multiple) "dissemination.less"; @import "home.less"; background-color: @extra-light-blue; }
+html.insights { @import (multiple) "dissemination.less"; @import "insights.less"; background-color: @extra-light-blue; @import (multiple) "inputoutputpane.less"; }
+html.aboutthemodel { @import (multiple) "dissemination.less"; @import "aboutthemodel.less"; background-color: @extra-light-blue; @import (multiple) "inputoutputpane.less"; }
+html.model { min-width: 900px; @import "model.less"; }
+
+body {
+	.font-primary;
+	color: #333;
+}
+h1,h2,h3,h4,h5,h6 {
+	.font-heading;
+}
+#content {
+	padding: 0px @container-margin-lr;
+	position: relative;
+}
+.pagetitle {
+	text-transform: uppercase;
+	font-size: 1.2em;
+	color: #D34C8B;
+	text-shadow: 1px 1px 1px rgba(255,50,50,0.05);
+}
+
+div.navigation {
+  overflow: auto;
+  width: 100%
+}
+div.breadcrumbs {
+  float: left
+}
+.breadcrumbs {
+  text-transform: uppercase;
+  font-size: 1.2rem !important;
+  display: inline;
+  font-weight: bold;
+}
+.breadcrumbs a,.breadcrumbs a:link,.breadcrumbs a:active, .breadcrumbs a:visited {
+  .breadcrumbs !important;
+  font-size: 1.3rem !important;
+  color: @green;
+  text-decoration: underline;
+}
+div.next {
+  float: right
+}
+.next {
+  text-transform: uppercase;
+  font-size: 1.2rem !important;
+  display: inline;
+  font-weight: bold;
+}
+.next a,.next a:link,.next a:active, .next a:visited {
+  .next !important;
+  font-size: 1.3rem !important;
+  color: @green;
+  text-decoration: underline;
+}
+
+b.def {
+	.font-heading;
+	font-weight: 700;
+	font-style: normal;
+	letter-spacing: 0.15em;
+	padding: 0 5px 0 5px;
+	text-decoration: none;
+	color: @dark-blue;
+	background-color: @extra-light-blue;
+}

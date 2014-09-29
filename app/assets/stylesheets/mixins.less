@@ -1,0 +1,32 @@
+/* HTML5Boilerplate's non-semantic helper class */
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/* http://www.m6tt.com/2011/09/22/a-less-approach-to-clearfix */
+.clearfix {
+  zoom: 1;
+  &:before { content: ''; display: block; }
+  &:after { content: ''; display: table; clear: both; }
+}
+
+/* http://demosthenes.info/blog/532/convert-images-to-black-and-white-with-css */
+.grayscale {
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+.ref:before { content: '['; }
+.ref:after { content: ']'; }
+.ref {
+	vertical-align: super;
+	font-size: 0.7em;
+}

@@ -1,0 +1,40 @@
+@*
+ *  Copyright (C) 2014 Icosystem
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ *@
+
+@(classes: String, title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html class="@classes">
+    <head>
+        <meta charset="utf-8">
+        <title>@title</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        
+        <link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")" >
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+        
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+        <script src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")" ></script>
+        
+        <link href="http://fonts.googleapis.com/css?family=Exo+2:400,300,400italic,700" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        @content
+    </body>
+</html>
